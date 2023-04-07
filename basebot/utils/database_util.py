@@ -4,7 +4,7 @@ from bson import ObjectId
 from typing import Optional, List
 import json, time
 
-from basebot.models.the_message import TheMessage
+from ..models.the_message import TheMessage
 
 USER_ID = 'user_id'
 TS = 'timestamp'

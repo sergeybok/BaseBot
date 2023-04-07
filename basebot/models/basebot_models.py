@@ -4,10 +4,10 @@ from typing import Optional, List
 from PIL import Image
 import os
 
-from basebot.utils.image_utils import img_to_b64_string
-from basebot.utils.database_util import MongoUtil
-from basebot.models.the_message import TheMessage
-from basebot.models.web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
+from ..utils.image_utils import img_to_b64_string
+from ..utils.database_util import MongoUtil
+from .the_message import TheMessage
+from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
 
 
 class BaseBot:

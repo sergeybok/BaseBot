@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
-from basebot.models.the_message import TheMessage
+from .the_message import TheMessage
 
 
 class MessageHistoryRequest(BaseModel):

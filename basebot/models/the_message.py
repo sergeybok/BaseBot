@@ -1,7 +1,7 @@
 
 from typing import Optional, List
 from pydantic import BaseModel
-from basebot.utils.image_utils import b64_string_to_img, img_to_b64_string
+from ..utils.image_utils import b64_string_to_img, img_to_b64_string
 from PIL import Image
 import uuid, time
 
