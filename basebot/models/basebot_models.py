@@ -78,7 +78,7 @@ class BaseBotWithLocalDb(BaseBot):
         self.db_util = MongoUtil()
     
     def save_chat_message(self, message: TheMessage):
-        self.db_util.save_chat_message(message)
+        self.db_util.save_chat_message(self.name, message)
         return
 
     def get_message_history(self, user_id:str, limit:int=10, before_ts:float=None, descending:bool=True) -> List[TheMessage]:

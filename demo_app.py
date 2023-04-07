@@ -15,6 +15,7 @@ class SkepticalBot(BaseBot):
         response_text = 'Really? You think ' + msg.get_text() + '?'
         response_msg = MessageWrapper(user_id=self.name)
         response_msg.set_text(response_text)
+        self.save_chat_message(response_msg.get_message())
         return response_msg.get_message()
 
 
