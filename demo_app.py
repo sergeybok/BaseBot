@@ -1,11 +1,8 @@
-from fastapi import FastAPI
 from basebot import BaseBot, BaseBotWithLocalDb
 from basebot import TheMessage, MessageWrapper
 
 
-
 ## define bot and override necessary functions
-
 class SkepticalBot(BaseBot):
     def receive_message(self, message: TheMessage):
         msg = MessageWrapper(message=message)
@@ -22,7 +19,10 @@ class SkepticalBot(BaseBot):
 # initialize the bot, or bots
 bot = SkepticalBot()
 
-# Start the bot (you can provide as many bots as you'd like 
+# Start the bot (you can provide as many bots as you'd like as arguments
 #    to this function as long as they are all different classes)
 app = BaseBot.start_app(bot)
+
+# example:
+# app = BaseBot.start_app(bot, other_bot, other_other_bot)
 
