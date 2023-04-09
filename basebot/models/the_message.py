@@ -16,6 +16,7 @@ class TheMessage(BaseModel):
     message: MessageContents
     timestamp: float
     user_id: str
+    to_user_id: str
     message_id: str
 
 

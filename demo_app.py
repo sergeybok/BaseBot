@@ -23,7 +23,7 @@ bot = SkepticalBot()
 app = BaseBot.start_app(bot)
 
 # you can provide as many bots as you'd like as arguments
-#    to this function as long as they are all different classes
+#  to this function as long as they are all different classes
 # example:
 # app = BaseBot.start_app(bot, other_bot, other_other_bot)
 
