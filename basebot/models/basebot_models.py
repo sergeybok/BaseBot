@@ -34,7 +34,7 @@ class BaseBot:
         BaseBot.app = app
         return app 
     def validate_message(self, message:TheMessage) -> TheMessage:
-        if message.message.text.lower().strip() == 'help':
+        if message.contents.text.lower().strip() == 'help':
             resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
             if self.help() is not None:
                 resp_msg.set_text(self.help())
@@ -58,8 +58,8 @@ class BaseBot:
     def respond(self, message: TheMessage):
         print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
         resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
-        if message.message.text:
-            resp_msg.set_text('You said: ' + message.message.text)
+        if message.contents.text:
+            resp_msg.set_text('You said: ' + message.contents.text)
         return resp_msg.get_message()
 
     def save_chat_message(self, message: TheMessage):
