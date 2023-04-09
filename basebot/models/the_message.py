@@ -21,12 +21,13 @@ class TheMessage(BaseModel):
 
 
 class MessageWrapper:
-    def __init__(self, message:TheMessage = None, user_id:str =''):
+    def __init__(self, message:TheMessage = None, user_id:str ='', to_user_id:str=''):
         if message:
             self.message = message
         else:
             assert user_id is not None and user_id != '', 'Make sure to provide user_id for new message'
-            self.message = TheMessage(message={}, timestamp=time.time(), user_id=user_id, message_id=str(uuid.uuid4()))
+            assert to_user_id is not None and to_user_id != '', 'Make sure to provide to_user_id for new message'
+            self.message = TheMessage(message={}, timestamp=time.time(), user_id=user_id, to_user_id=to_user_id, message_id=str(uuid.uuid4()))
     
     def get_message(self) -> TheMessage:
         return self.message

@@ -6,7 +6,7 @@ import os
 
 from ..utils.image_utils import img_to_b64_string
 from ..utils.database_util import MongoUtil
-from .the_message import TheMessage
+from .the_message import TheMessage, MessageWrapper
 from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
 
 
@@ -14,7 +14,7 @@ class BaseBot:
     app = None
     def __init__(self):
         self.name = 'bot.'+self.__class__.__name__
-        self.endpoint_receive = f'/bots/{self.__class__.__name__}/receive_message'
+        self.endpoint_receive = f'/bots/{self.__class__.__name__}/respond'
         self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
         self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
 
@@ -33,8 +33,8 @@ class BaseBot:
         BaseBot.app = app
         return app 
 
-    def receive_message(self, message: TheMessage):
-        print(f'{self.name} WARNING: receive_message(message:TheMessage) function should be overriden!')
+    def respond(self, message: TheMessage):
+        print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
         if message.message.get('text'):
             message.message['text'] = 'You said: ' + message.message.get('text')
         return message
@@ -52,6 +52,9 @@ class BaseBot:
         messages = self.get_message_history(request.user_id, request.limit, before_ts=request.before_ts, descending=False)
         return MessageHistoryResponse(messages=messages)
     
+    def get_message_to(self, user_id):
+        return MessageWrapper(user_id=self.name, to_user_id=user_id)
+
     def about(self) -> AboutResponse:
         icon = None
         if self.icon_path is not None:
