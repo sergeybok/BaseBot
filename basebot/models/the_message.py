@@ -46,7 +46,11 @@ class MessageWrapper:
     def get_user_id(self):
         return self.message.user_id
     def set_user_id(self, user_id:str):
-        self.message.user_id = user_id
+        self.message.to_user_id = user_id
+    def get_to_user_id(self):
+        return self.message.user_id
+    def set_to_user_id(self, user_id:str):
+        self.message.to_user_id = user_id
     def get_message_id(self):
         return self.message.message_id
     def set_message_id(self, msg_id:str):
