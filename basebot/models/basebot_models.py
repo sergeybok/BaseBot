@@ -12,11 +12,12 @@ from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResp
 
 class BaseBot:
     app = None
-    def __init__(self):
+    def __init__(self, credits=0):
         self.name = 'bot.'+self.__class__.__name__
         self.endpoint_respond = f'/bots/{self.__class__.__name__}/respond'
         self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
         self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
+        self.credits = credits
 
         self.icon_path = None
         for ext in ['.png', '.jpg', '.jpeg', '.JPEG']:
@@ -32,7 +33,10 @@ class BaseBot:
                 print('WARNING:',bot, 'is not an instance of BaseBot, make sure you define your new class like so: class MyBot(BaseBot)')
         BaseBot.app = app
         return app 
-
+    def check_credits(self, user_id):
+        if self.credits > 0:
+            print(f'{self.name} WARNING: check_credits(message:TheMessage) function should be overriden if you want to protect your bot!')
+        return
     def respond(self, message: TheMessage):
         print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
         if message.message.get('text'):

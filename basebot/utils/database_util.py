@@ -12,7 +12,7 @@ TS = 'timestamp'
 MESSAGE_ID = 'message_id'
 
 SET = '$set'
-LESS_THAN = '$le'
+LESS_THAN = '$lt'
 CONTAINS = '$in'
 
 class MongoUtil:
