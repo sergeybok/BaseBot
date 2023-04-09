@@ -52,7 +52,7 @@ class BaseBot:
         messages = self.get_message_history(request.user_id, request.limit, before_ts=request.before_ts, descending=False)
         return MessageHistoryResponse(messages=messages)
     
-    def get_message_to(self, user_id):
+    def get_message_to(self, user_id) -> MessageWrapper:
         return MessageWrapper(user_id=self.name, to_user_id=user_id)
 
     def about(self) -> AboutResponse:
