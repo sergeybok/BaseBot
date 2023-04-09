@@ -27,8 +27,10 @@ class MessageWrapper:
         else:
             assert user_id is not None and user_id != '', 'Make sure to provide user_id for new message'
             assert to_user_id is not None and to_user_id != '', 'Make sure to provide to_user_id for new message'
+            print('About to init')
             self.message = TheMessage(message=MessageContents(), timestamp=time.time(), user_id=user_id, to_user_id=to_user_id, message_id=str(uuid.uuid4()))
-    
+        print('after init')
+
     def get_message(self) -> TheMessage:
         return self.message
     def get_text(self) -> str:
