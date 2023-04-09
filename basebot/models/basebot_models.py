@@ -12,7 +12,7 @@ from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResp
 
 class BaseBot:
     app = None
-    def __init__(self, credits=0):
+    def __init__(self, credits:int=0):
         self.name = 'bot.'+self.__class__.__name__
         self.endpoint_respond = f'/bots/{self.__class__.__name__}/respond'
         self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
@@ -33,15 +33,34 @@ class BaseBot:
                 print('WARNING:',bot, 'is not an instance of BaseBot, make sure you define your new class like so: class MyBot(BaseBot)')
         BaseBot.app = app
         return app 
-    def check_credits(self, user_id):
+    def validate_message(self, message:TheMessage) -> TheMessage:
+        if message.message.text.lower().strip() == 'help':
+            resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
+            if self.help() is not None:
+                resp_msg.set_text(self.help())
+                return resp_msg.get_message()
+        if self.check_credits(message.user_id):
+            return None
+        else: # not enough credits
+            resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
+            resp_msg.set_text(f"Sorry you do not have enough credits. One message costs {self.credits} credits.")
+            return resp_msg.get_message()
+
+    def check_credits(self, user_id) -> bool:
         if self.credits > 0:
             print(f'{self.name} WARNING: check_credits(message:TheMessage) function should be overriden if you want to protect your bot!')
-        return
+        return True
+
+    def help(self):
+        print(f'{self.name} WARNING: check_credits(message:TheMessage) function should be overriden if you want to protect your bot!')
+        return None
+
     def respond(self, message: TheMessage):
         print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
-        if message.message.get('text'):
-            message.message['text'] = 'You said: ' + message.message.get('text')
-        return message
+        resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
+        if message.message.text:
+            resp_msg.set_text('You said: ' + message.message.text)
+        return resp_msg.get_message()
 
     def save_chat_message(self, message: TheMessage):
         print(f'{self.name} WARNING: save_chat_message(message:TheMessage) function should be overriden!')
@@ -72,7 +91,7 @@ class BaseBot:
         return AboutResponse(name=self.name, icon=icon)
     
     def add_endpoints(self, app:FastAPI):
-        print('Adding: ', self.endpoint_respond)
+        print('\tAdding: ', self.endpoint_respond)
         app.add_api_route(self.endpoint_respond, self.respond,  methods=["POST"], response_model=TheMessage)
         app.add_api_route(self.endpoint_about, self.about,  methods=["GET"])
         app.add_api_route(self.endpoint_history, self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
@@ -97,8 +116,14 @@ class BaseBotWithLocalDb(BaseBot):
 
 
 class BaseBotWithDb(BaseBot):
-    def __init__(self, email:str, api_key:str):
+    def __init__(self, email:str=None, api_key:str=None):
         super().__init__()
+        if email is None:
+            assert 'BASEBOT_EMAIL' in os.environ, 'You must either provide an email to BaseBotWithDb initializer or set it as environ variable by doing export BASEBOT_EMAIL=your_registered@email.com'
+            email = os.environ['BASEBOT_EMAIL']
+        if api_key is None:
+            assert 'BASEBOT_API_KEY' in os.environ, 'You must either provide an api key to BaseBotWithDb initializer or set it as environ variable by doing export BASEBOT_API_KEY=123abc'
+            api_key = os.environ['BASEBOT_API_KEY']
         self.email = email 
         self.api_key = api_key 
     def get_message_history(self, user_id:str, limit=10, before_ts=None, descending:bool=True) -> List[TheMessage]:

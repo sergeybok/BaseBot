@@ -6,6 +6,9 @@ from basebot import TheMessage, MessageWrapper
 class SkepticalBot(BaseBot):
     def receive_message(self, message: TheMessage):
         msg = MessageWrapper(message=message)
+        validation_resp_msg = self.validate_message(msg)
+        if validation_resp_msg is not None:
+            return validation_resp_msg.get_
         # gets most recent messages if you are using BaseBotWithDb, BaseBotWithLocalDb, or you overrode your own get_message_history function
         #    this version gets empty list
         previous_messages = self.get_message_history(msg.get_user_id(), limit=5)

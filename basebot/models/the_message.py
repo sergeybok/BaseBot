@@ -13,7 +13,7 @@ class MessageContents(BaseModel):
 
 
 class TheMessage(BaseModel):
-    message: MessageContents
+    contents: MessageContents
     timestamp: float
     user_id: str
     to_user_id: str
@@ -32,17 +32,17 @@ class MessageWrapper:
     def get_message(self) -> TheMessage:
         return self.message
     def get_text(self) -> str:
-        return self.message.message.text
+        return self.message.contents.text
     def set_text(self, text):
-        self.message.message.text = text
+        self.message.contents.text = text
     def get_images_pil(self) -> Image:
         return [b64_string_to_img(img_str) for img_str in self.message.message.get(IMAGE, [])]
     def get_images_b64(self) -> list:
-        return self.message.message.image
+        return self.message.contents.image
     def set_images_pil(self, images):
-        self.message.message.image = [img_to_b64_string(img) for img in images]
+        self.message.contents.image = [img_to_b64_string(img) for img in images]
     def set_images_b64(self, images:list):
-        self.message.message.image = images
+        self.message.contents.image = images
     def get_user_id(self):
         return self.message.user_id
     def set_user_id(self, user_id:str):
