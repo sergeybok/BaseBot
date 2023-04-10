@@ -73,13 +73,13 @@ class BaseBot:
         return None
     def templates(self, user_id=None) -> Union[List[str],List[Template]]:
         print(f'{self.name} SUGGESTIONS: templates() function should be overriden \nt\tif there are specific phrases people reuse all the time in prompts.')
-        return None
+        return []
     def _templates(self, request:TemplateRequest=None) -> TemplateResponse:
         try:
             templates = self.templates(user_id=request.user_id) 
         except:
             templates = self.templates()
-        if len(templates) > 0 and type(templates[0]) == str:
+        if templates and len(templates) > 0 and type(templates[0]) == str:
             templates = [ Template(preview=preview_str(t), text=t) for t in templates ]
         return TemplateResponse(templates=templates)
     def respond(self, message: MessageWrapper) -> Union[TheMessage, MessageWrapper]:
