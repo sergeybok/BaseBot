@@ -35,8 +35,10 @@ class MessageWrapper:
         return self.message.contents.text
     def set_text(self, text):
         self.message.contents.text = text
-    def get_images_pil(self) -> Image:
-        return [b64_string_to_img(img_str) for img_str in self.message.message.get(IMAGE, [])]
+    def get_images_pil(self) -> list:
+        if self.message.contents.image:
+            return [b64_string_to_img(img_str) for img_str in self.message.contents.image]
+        return None
     def get_images_b64(self) -> list:
         return self.message.contents.image
     def set_images_pil(self, images):
