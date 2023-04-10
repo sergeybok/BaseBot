@@ -89,6 +89,9 @@ class BaseBot:
             resp_msg.set_text('You said: ' + message.get_text())
         return resp_msg.get_message()
     def _respond(self, message: TheMessage):
+        valid_msg = self.validate_message(message)
+        if valid_msg is not None:
+            return valid_msg
         resp = self.respond(MessageWrapper(message))
         if isinstance(message, TheMessage):
             return  resp
