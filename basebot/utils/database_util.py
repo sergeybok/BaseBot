@@ -6,8 +6,8 @@ import json, time
 
 from ..models.the_message import TheMessage
 
-USER_ID = 'user_id'
-TO_USER_ID = 'to_user_id'
+USER_ID = 'sender_id'
+TO_USER_ID = 'recipient_id'
 TS = 'timestamp'
 MESSAGE_ID = 'message_id'
 

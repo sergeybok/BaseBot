@@ -13,8 +13,9 @@ class MessageHistoryResponse(BaseModel):
     messages: List[TheMessage]
 
 class AboutResponse(BaseModel):
-    name: Optional[str]
+    name: str
     icon: Optional[str] 
+    description: Optional[str]
 
 class TemplateRequest(BaseModel):
     user_id: str
