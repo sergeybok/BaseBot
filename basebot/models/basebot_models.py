@@ -72,7 +72,7 @@ class BaseBot:
         print(f'{self.name} SUGGESTIONS: help() function should be overriden to provide \n\ta helpful message about what the bot is and how to use it.')
         return None
     def templates(self, user_id=None) -> Union[List[str],List[Template]]:
-        print(f'{self.name} SUGGESTIONS: templates() function should be overriden \nt\tif there are specific phrases people reuse all the time in prompts.')
+        print(f'{self.name} SUGGESTIONS: templates() function should be overriden \n\tif there are specific phrases people reuse all the time in prompts.')
         return []
     def _templates(self, request:TemplateRequest=None) -> TemplateResponse:
         try:
