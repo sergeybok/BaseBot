@@ -49,7 +49,9 @@ class BaseBot:
     def __repr__(self) -> str:
         return self.name + '\n\t'.join([v for k,v in vars(self).items() if k.startswith('endpoint_') and type(v) == str])
     
-    def validate_message(self, message:TheMessage) -> TheMessage:
+    def validate_message(self, message:Union[TheMessage, MessageWrapper]) -> TheMessage:
+        if isinstance(message, MessageWrapper):
+            message = message.get_message()
         if message.contents.text.lower().strip() == 'help':
             help_msg = self.help()
             if help_msg is not None:
@@ -73,9 +75,9 @@ class BaseBot:
         print(f'{self.name} SUGGESTIONS: templates() function should be overriden \nt\tif there are specific phrases people reuse all the time in prompts.')
         return None
     def _templates(self, request:TemplateRequest=None) -> TemplateResponse:
-        if request:
+        try:
             templates = self.templates(user_id=request.user_id) 
-        else:
+        except:
             templates = self.templates()
         if len(templates) > 0 and type(templates[0]) == str:
             templates = [ Template(preview=preview_str(t), text=t) for t in templates ]
