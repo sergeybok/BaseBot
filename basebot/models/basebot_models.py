@@ -31,12 +31,12 @@ class BaseBot:
     icon_path : str
         the path to your bot icon image
 
-    Endpoints:
+    Endpoints
     -------
-    /bots/{self.__class__.__name__}/about
-    /bots/{self.__class__.__name__}/respond
-    /bots/{self.__class__.__name__}/history
-    /bots/{self.__class__.__name__}/templates
+    "/bots/{self.__class__.__name__}/about" 
+    "/bots/{self.__class__.__name__}/respond" 
+    "/bots/{self.__class__.__name__}/history" 
+    "/bots/{self.__class__.__name__}/templates" 
 
     Methods
     -------
@@ -58,10 +58,12 @@ class BaseBot:
         Suggested use:
         ```
         def respond(self, message):
+            context_messages: List[TheMessage] = self.get_message_context(message)
             # do your chatbot logic here
+            # ...
             resp_text = {Bot text response}
             resp_images: list = [{Bot image response}, ...]
-            resp_message = self.get_message_to(message.get_user_id())
+            resp_message = self.get_message_to(message.get_sender_id())
             resp_message.set_text(resp_text)
             resp_message.set_images_pil(resp_images)
             return resp_message
@@ -169,17 +171,19 @@ class BaseBot:
         Suggested use:
         ```
         def respond(self, message):
+            context_messages: List[TheMessage] = self.get_message_context(message)
             # do your chatbot logic here
+            # ...
             resp_text = 'Bot text response'
             resp_images = [{Bot image response}, ...]
-            resp_message = self.get_message_to(message.get_user_id())
+            resp_message = self.get_message_to(message.get_sender_id())
             resp_message.set_text(resp_text)
             resp_message.set_images_pil(resp_images)
             return resp_message
         ```
         """
         print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
-        resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.get_user_id())
+        resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.get_sender_id())
         if message.contents.text:
             resp_msg.set_text('You said: ' + message.get_text())
         return resp_msg.get_message()
