@@ -126,13 +126,13 @@ class BaseBot:
         if message.contents.text.lower().strip() == 'help':
             help_msg = self.help()
             if help_msg is not None:
-                resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
+                resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.sender_id)
                 resp_msg.set_text(help_msg)
                 return resp_msg.get_message()
-        if self.check_credits(message.user_id):
+        if self.check_credits(message.sender_id):
             return None
         else: # not enough credits
-            resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.user_id)
+            resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.sender_id)
             resp_msg.set_text(f"Sorry you do not have enough credits. One message costs {self.credits} credits.")
             return resp_msg.get_message()
     def check_credits(self, user_id) -> bool:
@@ -217,7 +217,7 @@ class BaseBot:
         """
         if type(message) == MessageWrapper:
             message = message.get_message()
-        previous_messages = self.get_message_history(message.user_id, limit=limit+1, before_ts=before_ts, descending=descending)
+        previous_messages = self.get_message_history(message.sender_id, limit=limit+1, before_ts=before_ts, descending=descending)
         if previous_messages:
             return [MessageWrapper(message=msg) for msg in previous_messages if msg.message_id != message.message_id][:limit]
         return []
