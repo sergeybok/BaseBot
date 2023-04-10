@@ -126,13 +126,13 @@ class BaseBot:
         if message.contents.text.lower().strip() == 'help':
             help_msg = self.help()
             if help_msg is not None:
-                resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.sender_id)
+                resp_msg = MessageWrapper(user_id=self.name, recipient_id=message.sender_id)
                 resp_msg.set_text(help_msg)
                 return resp_msg.get_message()
         if self.check_credits(message.sender_id):
             return None
         else: # not enough credits
-            resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.sender_id)
+            resp_msg = MessageWrapper(user_id=self.name, recipient_id=message.sender_id)
             resp_msg.set_text(f"Sorry you do not have enough credits. One message costs {self.credits} credits.")
             return resp_msg.get_message()
     def check_credits(self, user_id) -> bool:
@@ -183,7 +183,7 @@ class BaseBot:
         ```
         """
         print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
-        resp_msg = MessageWrapper(user_id=self.name, to_user_id=message.get_sender_id())
+        resp_msg = MessageWrapper(user_id=self.name, recipient_id=message.get_sender_id())
         if message.contents.text:
             resp_msg.set_text('You said: ' + message.get_text())
         return resp_msg.get_message()
