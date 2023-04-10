@@ -104,12 +104,12 @@ class BaseBot:
     def save_chat_message(self, message: TheMessage):
         print(f'{self.name} WARNING: save_chat_message(message:TheMessage) function should be overriden!')
         return
-    def get_message_context(self, message:Union[TheMessage, MessageWrapper], limit=10, before_ts=None, descending:bool=True) -> List[TheMessage]:
+    def get_message_context(self, message:Union[TheMessage, MessageWrapper], limit=10, before_ts=None, descending:bool=True) -> List[MessageWrapper]:
         if type(message) == MessageWrapper:
             message = message.get_message()
         previous_messages = self.get_message_history(message.user_id, limit=limit+1, before_ts=before_ts, descending=descending)
         if previous_messages:
-            return [msg for msg in previous_messages if msg.message_id != message.message_id][:limit]
+            return [MessageWrapper(message=msg) for msg in previous_messages if msg.message_id != message.message_id][:limit]
         return []
     def get_message_history(self, user_id:str, limit=10, before_ts=None, descending:bool=True) -> List[TheMessage]:
         print(f'{self.name} WARNING: get_message_history(user_id, limit, ...) function should be overriden!')
