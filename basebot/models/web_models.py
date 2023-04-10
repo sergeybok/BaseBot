@@ -24,7 +24,7 @@ class Template(BaseModel):
     text: str
 
 class TemplateResponse(BaseModel):
-    templates = Optional[List[Template]] = None
+    templates: Optional[List[Template]] = None
 
 
 
