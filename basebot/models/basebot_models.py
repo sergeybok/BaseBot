@@ -223,7 +223,7 @@ class BaseBot:
         Should be overriden if inheriting from BaseBot.
         """
         print(f'{self.name} WARNING: get_message_history(user_id, limit, ...) function should be overriden!')
-        return MessageHistoryResponse(messages=[])
+        return []
     def _get_message_history(self, request: MessageHistoryRequest) -> MessageHistoryResponse:
         """
         Wrapper around get_message_history that expects and returns the WebModels
