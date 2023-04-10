@@ -132,7 +132,7 @@ class BaseBot:
         return AboutResponse(name=self.name, icon=icon)
     def add_endpoints(self, app:FastAPI):
         print('\tAdding: ', self.endpoint_respond)
-        app.add_api_route(self.endpoint_respond, self.respond,  methods=["POST"], response_model=TheMessage)
+        app.add_api_route(self.endpoint_respond, self._respond,  methods=["POST"], response_model=TheMessage)
         app.add_api_route(self.endpoint_about, self.about,  methods=["GET"])
         app.add_api_route(self.endpoint_history, self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
         app.add_api_route(self.endpoint_templates, self._templates, methods=['GET','POST'], response_model=TemplateResponse)
