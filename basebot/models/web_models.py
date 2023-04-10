@@ -16,6 +16,16 @@ class AboutResponse(BaseModel):
     name: Optional[str]
     icon: Optional[str] 
 
+class TemplateRequest(BaseModel):
+    user_id: str
+
+class Template(BaseModel):
+    preview: str
+    text: str
+
+class TemplateResponse(BaseModel):
+    templates = Optional[List[Template]] = None
+
 
 
 
