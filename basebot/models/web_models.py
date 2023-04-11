@@ -9,6 +9,10 @@ class MessageHistoryRequest(BaseModel):
     before_ts: Optional[float] = None
     limit: Optional[int] = 10
 
+class MessageHistoryRequestWithBot(MessageHistoryRequest):
+    bot_id: str
+
+
 class MessageHistoryResponse(BaseModel):
     messages: List[TheMessage]
 
