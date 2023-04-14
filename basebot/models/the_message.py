@@ -12,12 +12,14 @@ class MessageContents(BaseModel):
     image: Optional[List[str]] = [] 
 
 
-class TheMessage(BaseModel):
-    contents: MessageContents
+class TheMessageMetadata(BaseModel):
     timestamp: float
     sender_id: str
     recipient_id: str
     message_id: str
+
+class TheMessage(TheMessageMetadata):
+    contents: MessageContents
     extras: Optional[dict] = {}
 
 
