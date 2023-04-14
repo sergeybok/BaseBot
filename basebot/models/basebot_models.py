@@ -126,7 +126,7 @@ class BaseBot:
         if message.contents.text.lower().strip() == 'help':
             help_msg = self.help()
             if help_msg is not None:
-                resp_msg = MessageWrapper(user_id=self.name, recipient_id=message.sender_id)
+                resp_msg = MessageWrapper(sender_id=self.name, recipient_id=message.sender_id)
                 resp_msg.set_text(help_msg)
                 return resp_msg.get_message()
         if self.check_credits(message.sender_id):
