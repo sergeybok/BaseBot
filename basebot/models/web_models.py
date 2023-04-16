@@ -21,6 +21,7 @@ class AboutResponse(BaseModel):
     bot_id: str
     icon: Optional[str] 
     description: Optional[str]
+    registered: Optional[bool] = False 
 
 class TemplateRequest(BaseModel):
     user_id: str

@@ -124,6 +124,8 @@ class BaseBot:
             for ext in ['.png', '.jpg', '.jpeg', '.JPEG']:
                 if os.path.exists(self.__class__.__name__+ext):
                     self.icon_path = self.__class__.__name__+ext
+        self.registered = False
+
     def __repr__(self) -> str:
         return self.name + '\n\t'.join([v for k,v in vars(self).items() if k.startswith('endpoint_') and type(v) == str])
     
@@ -296,6 +298,7 @@ class RegisteredBaseBot(BaseBot):
         super().__init__(credits, icon_path, bot_id)
         self.bot_token = bot_token
         self.url = os.environ['FRIENDLY_BACKEND_ENDPOINT']
+        self.registered = True
 
     def charge_credits(self, message_id:str) -> bool:
         url = self.url + '/bots/charge_credits'
