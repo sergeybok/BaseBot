@@ -207,8 +207,8 @@ class BaseBot:
         # Not sure if I should save the validation messages?
         self.save_chat_message(message)
         resp = self.respond(MessageWrapper(message))
-        if type(message) == TheMessage:
-            self.save_chat_message(message)
+        if type(resp) == TheMessage:
+            self.save_chat_message(resp)
             return  resp
         self.save_chat_message(resp.get_message())
         return resp.get_message()
