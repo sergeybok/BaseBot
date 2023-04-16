@@ -247,7 +247,7 @@ class BaseBot:
         """
         Initializes and returns a new response message with all of the relevant fields set except for contents.
         """
-        return MessageWrapper(sender_id=self.name, recipient_id=user_id)
+        return MessageWrapper(sender_id=self.bot_id, recipient_id=user_id)
     def about(self) -> AboutResponse:
         """
         Returns the metadata of the bot AboutResponse(name=self.name, description=self.help(), icon={b64 str})
