@@ -9,13 +9,14 @@ To install
 
 Descrbe how to implement a bot.
 
+### To start your bot
+
+Uvicorn or gunicorn 
+
 ## To setup local db
 
 Describe how to install mongodb 
 
-## To start your bot
-
-Uvicorn or gunicorn 
 
 ## To ngrok your server (Ubuntu Linux)
 
