@@ -18,6 +18,7 @@ class MessageHistoryResponse(BaseModel):
 
 class AboutResponse(BaseModel):
     name: str
+    bot_id: str
     icon: Optional[str] 
     description: Optional[str]
 
