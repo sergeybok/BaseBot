@@ -49,7 +49,8 @@ If you want to use something other than MongoDB look into overriding `get_messag
 There are also a few functions that are recommended to override for any bot:  
 
 + help() function which is automatically triggered by sending help on the device
-  + this is also customizable but you gotta delve into the BaseBot class more deeply
+  + This should provide a helpful message of how to use the bot and what it does.
+  + You can remove this functionality by looking into and overriding `_respond()` function. See BaseBot class for more details.
 + templates() function which defines helpful keywords or phrases in the top view of the chat 
   + e.g. for Stable Diffusion you just hit that text bubble to fill in "High quality, HD, masterpiece, etc..." instead of rewriting it everytime
 
@@ -95,6 +96,12 @@ sudo systemctl daemon-reload
 
 ## To ngrok your server (Ubuntu Linux)
 
-REFERENCE: https://www.slingacademy.com/article/deploying-fastapi-on-ubuntu-with-nginx-and-lets-encrypt/
+REFERENCE for HTTPS (more secure and so recommended): https://www.slingacademy.com/article/deploying-fastapi-on-ubuntu-with-nginx-and-lets-encrypt/
 
+If you want to access a server running locally on your machine you will need to open up the port on which you are serving your bot. The simplest way to do this is by using ngrok, a tool that creates a secure tunnel to expose your local server to the internet.
 
+1. Download and install ngrok by following the instructions in the [official ngrok documentation.](https://ngrok.com/docs#getting-started-installation)
+2. Start your server on any port, we will assume it's port 8000 for commands below
+3. Run `ngrok http 8000`
+4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
+5. You can now plug in this URL into the Friendly app and communicate with your bots!
