@@ -13,6 +13,8 @@ Provide links to iOS and Android app.
 
 You should probably setup your database first by [following the instructions below](https://github.com/sergeybok/BaseBot#to-setup-local-db) so that you can actually run the bot. But I'll descrbe how to implement a bot here for visibility. Also don't create and run your bot from inside this repo, it's better to install the library and run it in a separate folder/repo.
 
+### The protocol
+
 The main protocol of BaseBot and Friendly AI app is the following class:
 
 ``` python
@@ -30,6 +32,21 @@ class TheMessage(BaseModel):
 ```
 
 Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like. But it's probably easier to interface with `TheMessage` class via the `MessageWrapper` which automatically initializes message_id, timestamp, and sender_id (which is the bot_id if you're responding) for response messages if you use the `self.get_message_to()` method. So you only need to set the contents of the message. It also has helpful functions such as setting images from a list of PIL.Image objects which are then automatically converted to base64 strings.
+
+You can, if you so choose, build your own app that receives and sends the same JSON objects, or you can build your own version of BaseBot (in another language for example such as node.js) to serve your bots as long as the `/respond` endpoint both receives and sends back this object:
+```
+{
+    'contents': {'text': 'my text', 'image': []},
+    'timestamp': 12456677,
+    'sender_id': 'some_id',
+    'recipient_id': 'other_id',
+    'message_id': 'unique_message_id' 
+}
+```
+
+Note that in BaseBot all IDs are generated with UUID v4.
+
+### The demo app (Vanilla ChatGPT)
 
 This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
