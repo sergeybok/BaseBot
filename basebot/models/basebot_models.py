@@ -141,7 +141,7 @@ class BaseBot:
         if self.charge_credits(message.message_id):
             return None
         else: # not enough credits
-            resp_msg = MessageWrapper(user_id=self.name, recipient_id=message.sender_id)
+            resp_msg = MessageWrapper(sender_id=self.name, recipient_id=message.sender_id)
             resp_msg.set_text(f"Sorry you do not have enough credits. One message costs {self.credits} credits.")
             return resp_msg.get_message()
     def charge_credits(self, message_id) -> bool:
