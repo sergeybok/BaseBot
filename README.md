@@ -65,6 +65,7 @@ uvicorn demo_app:app --port 8000 --host 0.0.0.0
 
 The uvicorn command expects FILENAME:APPLICATION_VARIABLE_NAME where the FILENAME is without extension and the variable name is the `app = BaseBot.start_app()` variable. See [FastAPI deployment guide for more details](https://fastapi.tiangolo.com/deployment/manually/).
 
+This will now server your bot on `http://localhost:8000/bots/ChatGPTBot` <- it is this address you provide to your app (except not the localhost version because that's only accessible on the same machine, see the **ngrok** section below on how to open up your port.)
 
 ## To setup local db
 
@@ -78,7 +79,7 @@ source ~/.bashrc
 ```
 
 
-### Ubuntu Linux (summary of the official documentation)
+### Install & Launch on Ubuntu Linux (summary of docs above)
 
 Run the following commands to install:
 
@@ -111,4 +112,5 @@ If you want to access a server running locally on your machine you will need to 
 2. Start your server on any port, we will assume it's port 8000 for commands below
 3. Run `ngrok http 8000`
 4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
-5. You can now plug in this URL into the Friendly app and communicate with your bots!
+5. You can now plug in this URL into the Friendly app and communicate with your bots! **Note** that the URL expected by the app is with the bot class name. So for the demo_app ChatGPTBot it would be something like `http://localhost:8000/bots/ChatGPTBot`
+
