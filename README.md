@@ -13,7 +13,7 @@ Provide links to iOS and Android app.
 
 You should probably setup your database first by [following the instructions below](https://github.com/sergeybok/BaseBot#to-setup-local-db) so that you can actually run the bot. But I'll descrbe how to implement a bot here for visibility. Also don't create and run your bot from inside this repo, it's better to install the library and run it in a separate folder/repo.
 
-This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication).
+This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
 ``` python
 from basebot import BaseBotWithLocalDb, BaseBot
