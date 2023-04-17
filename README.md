@@ -33,7 +33,7 @@ class TheMessage(BaseModel):
 
 Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like. But it's probably easier to interface with `TheMessage` class via the `MessageWrapper` which automatically initializes message_id, timestamp, and sender_id (which is the bot_id if you're responding) for response messages if you use the `self.get_message_to()` method. So you only need to set the contents of the message. It also has helpful functions such as setting images from a list of PIL.Image objects which are then automatically converted to base64 strings.
 
-You can, if you so choose, build your own app that receives and sends the same JSON objects, or you can build your own version of BaseBot (in another language for example such as node.js) to serve your bots as long as the `/respond` endpoint both receives and sends back this object:
+You can, if you so choose, build your own app that receives and sends the same protocol and interface with your BaseBot bot. Or you can build your own version of BaseBot server (in another language for example such as node.js) to interface with the Friendly AI app as long as the `/respond` endpoint both receives and sends back this object:
 ```
 {
     'contents': {'text': 'my text', 'image': []},
@@ -44,7 +44,7 @@ You can, if you so choose, build your own app that receives and sends the same J
 }
 ```
 
-Note that in BaseBot all IDs are generated with UUID v4.
+Note that in BaseBot as well as Friendly AI app, all IDs are generated with UUID v4.
 
 ### The demo app (Vanilla ChatGPT)
 
