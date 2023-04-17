@@ -13,6 +13,24 @@ Provide links to iOS and Android app.
 
 You should probably setup your database first by [following the instructions below](https://github.com/sergeybok/BaseBot#to-setup-local-db) so that you can actually run the bot. But I'll descrbe how to implement a bot here for visibility. Also don't create and run your bot from inside this repo, it's better to install the library and run it in a separate folder/repo.
 
+The main protocol of BaseBot and Friendly AI app is the following class:
+
+``` python
+from pydantic import BaseModel
+class MessageContents(BaseModel):
+    text: Optional[str] = None
+    image: Optional[List[str]] = [] 
+
+class TheMessage(BaseModel):
+    contents: MessageContents
+    timestamp: float
+    sender_id: str
+    recipient_id: str
+    message_id: str
+```
+
+Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like.
+
 This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
 ``` python
