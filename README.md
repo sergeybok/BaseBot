@@ -15,7 +15,7 @@ You should probably setup your database first by following the instructions belo
 
 This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from OpenAI.
 
-```
+``` python
 from basebot import BaseBotWithLocalDb
 from basebot import TheMessage, MessageWrapper
 import openai
