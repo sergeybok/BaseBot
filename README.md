@@ -112,5 +112,5 @@ If you want to access a server running locally on your machine you will need to 
 2. Start your server on any port, we will assume it's port 8000 for commands below
 3. Run `ngrok http 8000`
 4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
-5. You can now plug in this URL into the Friendly app and communicate with your bots! **Note** that the URL expected by the app is with the bot class name. So for the demo_app ChatGPTBot it would be something like `http://localhost:8000/bots/ChatGPTBot`
+5. You can now plug in this URL into the Friendly app and communicate with your bots! **Note** that the URL expected by the app is with the bot class name. So for the demo_app ChatGPTBot it would be something like `http://12345678.ngrok.io/bots/ChatGPTBot`
 
