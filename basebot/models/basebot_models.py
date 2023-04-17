@@ -288,7 +288,7 @@ class BaseBotWithLocalDb(BaseBot):
 
     def get_message_history(self, user_id:str, limit:int=10, before_ts:float=None, descending:bool=True) -> List[TheMessage]:
         messages = self.db_util.get_chat_messages(name=self.name, user_id=user_id,limit=limit, before_ts=before_ts)
-        if descending:
+        if not descending:
             messages = list(reversed(messages))
         return messages
 
