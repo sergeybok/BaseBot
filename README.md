@@ -11,8 +11,36 @@ Provide links to iOS and Android app.
 
 ## To implement a bot
 
-You should probably setup your database first by following the instructions below so that you can actually run the bot. But I'll descrbe how to implement a bot here for visibility.
+You should probably setup your database first by following the instructions below so that you can actually run the bot. But I'll descrbe how to implement a bot here for visibility. Also don't create and run your bot from inside this repo, it's better to install the library and run it in a separate folder/repo.
 
+This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from OpenAI.
+
+```
+from basebot import BaseBotWithLocalDb
+from basebot import TheMessage, MessageWrapper
+import openai
+
+class ChatGPTBot(BaseBotWithLocalDb):
+    def respond(self, message: MessageWrapper) -> MessageWrapper:
+        if message.get_text():
+            # get previous messages, oldest message first
+            context_messages = self.get_message_context(message, limit=5, descending=False) 
+            chatgpt_messages = []
+            for msg in context_messages:
+                if msg.get_sender_id() == message.get_sender_id() and msg.get_text():
+                    chatgpt_messages.append({'role': 'user', 'content': msg.get_text()})
+                elif msg.get_text():
+                    chatgpt_messages.append({'role': 'assistant', 'content': msg.get_text()})
+            # add current message last
+            chatgpt_messages.append({'role': 'user', 'content': message.get_text()})
+            # Call OpenAI API (this will fail without API key)
+            chatgpt_response = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=chatgpt_messages)
+            response_text = chatgpt_response['choices'][0]['message']['content']
+            resp_message = self.get_message_to(user_id=message.get_sender_id())
+            resp_message.set_text(response_text)
+            return resp_message
+        return {}
+```
 
 
 ### To start your bot
