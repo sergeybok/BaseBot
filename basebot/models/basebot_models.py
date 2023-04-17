@@ -241,7 +241,7 @@ class BaseBot:
         """
         Wrapper around get_message_history that expects and returns the WebModels
         """
-        messages = self.get_message_history(request.user_id, request.limit, before_ts=request.before_ts, descending=False)
+        messages = self.get_message_history(request.user_id, request.limit, before_ts=request.before_ts, descending=True)
         return MessageHistoryResponse(messages=messages)
     def get_message_to(self, user_id) -> MessageWrapper:
         """
