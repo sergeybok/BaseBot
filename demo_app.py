@@ -1,26 +1,30 @@
-from basebot import BaseBot, BaseBotWithLocalDb
+from basebot import BaseBotWithLocalDb, BaseBot
 from basebot import TheMessage, MessageWrapper
+import openai
 
-
-## define bot and override necessary functions
-class SkepticalBot(BaseBot):
-    def receive_message(self, message: TheMessage):
-        msg = MessageWrapper(message=message)
-        validation_resp_msg = self.validate_message(msg)
-        if validation_resp_msg is not None:
-            return validation_resp_msg.get_
-        # gets most recent messages if you are using BaseBotWithDb, BaseBotWithLocalDb, or you overrode your own get_message_history function
-        #    this version gets empty list
-        previous_messages = self.get_message_history(msg.get_user_id(), limit=5)
-        response_text = 'Really? You think ' + msg.get_text() + '?'
-        response_msg = self.get_message_to(msg.get_user_id())
-        response_msg.set_text(response_text)
-        self.save_chat_message(response_msg.get_message())
-        return response_msg.get_message()
-
+class ChatGPTBot(BaseBotWithLocalDb):
+    def respond(self, message: MessageWrapper) -> MessageWrapper:
+        if message.get_text():
+            # get previous messages, oldest message first
+            context_messages = self.get_message_context(message, limit=5, descending=False) 
+            chatgpt_messages = []
+            for msg in context_messages:
+                if msg.get_sender_id() == message.get_sender_id() and msg.get_text():
+                    chatgpt_messages.append({'role': 'user', 'content': msg.get_text()})
+                elif msg.get_text():
+                    chatgpt_messages.append({'role': 'assistant', 'content': msg.get_text()})
+            # add current message last
+            chatgpt_messages.append({'role': 'user', 'content': message.get_text()})
+            # Call OpenAI API (this will fail without API key)
+            chatgpt_response = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=chatgpt_messages)
+            response_text = chatgpt_response['choices'][0]['message']['content']
+            resp_message = self.get_message_to(user_id=message.get_sender_id())
+            resp_message.set_text(response_text)
+            return resp_message
+        return {}
 
 # initialize the bot, or bots
-bot = SkepticalBot()
+bot = ChatGPTBot()
 
 # Start the bot 
 app = BaseBot.start_app(bot)
