@@ -305,8 +305,10 @@ class RegisteredBaseBot(BaseBot):
         d = { 'message_id': message_id }
         headers = {"Authorization": f"Bearer {self.bot_token}" }
         resp = requests.post(url, json=d, headers=headers)
-
-        return True
+        if resp.status_code == 200:
+            return True
+        else:
+            return False
 
     def get_message_history(self, user_id:str, limit:int=10, before_ts:float=None, descending:bool=True) -> List[TheMessage]:
         url = self.url + '/messages/get_message_history'
