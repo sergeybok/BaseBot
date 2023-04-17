@@ -106,7 +106,7 @@ class BaseBot:
         return app 
     
     # Instance Methods
-    def __init__(self, credits:int=0, icon_path:str=None, bot_id:str=None):
+    def __init__(self, price:int=0, icon_path:str=None, bot_id:str=None):
         self.name = 'bot.'+self.__class__.__name__
         if bot_id:
             self.bot_id = bot_id
@@ -116,7 +116,7 @@ class BaseBot:
         self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
         self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
         self.endpoint_templates = f'/bots/{self.__class__.__name__}/templates'
-        self.credits = credits
+        self.price = price
         if icon_path:
             self.icon_path = icon_path
         else:
@@ -142,13 +142,13 @@ class BaseBot:
             return None
         else: # not enough credits
             resp_msg = MessageWrapper(sender_id=self.name, recipient_id=message.sender_id)
-            resp_msg.set_text(f"Sorry you do not have enough credits. One message costs {self.credits} credits.")
+            resp_msg.set_text(f"Sorry you do not have enough credits. One message costs {self.price} credits.")
             return resp_msg.get_message()
     def charge_credits(self, message_id) -> bool:
         """
         returns True if user has sufficient credits and was successfully charged. Needs to be overriden for BaseBot class.
         """
-        if self.credits > 0:
+        if self.price > 0:
             print(f'{self.name} WARNING: charge_credits(message:TheMessage) function \n\t should be overriden if you want to protect your bot!')
         return True
     def help(self) -> str:
@@ -261,7 +261,7 @@ class BaseBot:
                 print(f'{self.name} failed to load icon image at {self.icon_path} with exception:\n\t', e)
                 icon = None
                 pass
-        return AboutResponse(name=self.name, icon=icon, bot_id=self.bot_id)
+        return AboutResponse(name=self.name, icon=icon, bot_id=self.bot_id, price=self.price)
     def add_endpoints(self, app:FastAPI):
         """
         Adds the routing for the endpoints and corresponding functions

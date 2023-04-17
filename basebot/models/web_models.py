@@ -22,6 +22,7 @@ class AboutResponse(BaseModel):
     icon: Optional[str] 
     description: Optional[str]
     registered: Optional[bool] = False 
+    price: Optional[int] = 0
 
 class TemplateRequest(BaseModel):
     user_id: str
