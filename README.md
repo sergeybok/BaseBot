@@ -44,6 +44,15 @@ class ChatGPTBot(BaseBotWithLocalDb):
 app = BaseBot.start_app(ChatGPTBot())
 ```
 
+If you want to use something other than MongoDB look into overriding `get_message_history()`, or if you want to change for example how the context messages are retrieved (the current implementations just calls `get_message_history()` and makes sure the current message isn't in the batch) you can easily override the methods in your bot implementation, e.g. maybe you want to do search instead of getting most recent. Look at `class Basebot` for more details.
+
+There are also a few functions that are recommended to override for any bot:  
+
++ help() function which is automatically triggered by sending help on the device
+  + this is also customizable but you gotta delve into the BaseBot class more deeply
++ templates() function which defines helpful keywords or phrases in the top view of the chat 
+  + e.g. for Stable Diffusion you just hit that text bubble to fill in "High quality, HD, masterpiece, etc..." instead of rewriting it everytime
+
 
 ### To start your bot
 
