@@ -29,7 +29,7 @@ class TheMessage(BaseModel):
     message_id: str
 ```
 
-Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like.
+Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like. But it's probably easier to interface with `TheMessage` class via the `MessageWrapper` which automatically initializes message_id and timestamp for response messages, and has helpful functions such as setting images from a list of PIL.Image objects which are then automatically converted to base64 strings.
 
 This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
