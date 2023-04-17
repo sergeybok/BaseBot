@@ -57,7 +57,14 @@ There are also a few functions that are recommended to override for any bot:
 
 ### To start your bot
 
-Uvicorn or gunicorn 
+From your directory or repo where you have the above demo_app.py file, you would start it with the following command:
+
+```
+uvicorn demo_app:app --port 8000 --host 0.0.0.0
+```
+
+The uvicorn command expects FILENAME:APPLICATION_VARIABLE_NAME where the FILENAME is without extension and the variable name is the `app = BaseBot.start_app()` variable. See [FastAPI deployment guide for more details](https://fastapi.tiangolo.com/deployment/manually/).
+
 
 ## To setup local db
 
