@@ -275,8 +275,8 @@ class BaseBot:
 
 
 class BaseBotWithLocalDb(BaseBot):
-    def __init__(self, db_util: MongoUtil = None):
-        super().__init__()
+    def __init__(self, db_util: MongoUtil = None, **kwargs):
+        super().__init__(**kwargs)
         if db_util:
             self.db_util = db_util
         else:
@@ -294,8 +294,8 @@ class BaseBotWithLocalDb(BaseBot):
 
 
 class RegisteredBaseBot(BaseBot):
-    def __init__(self, bot_id, bot_token, credits: int = 0, icon_path: str = None):
-        super().__init__(credits, icon_path, bot_id)
+    def __init__(self, bot_id, bot_token, price: int = 0, icon_path: str = None, **kwargs):
+        super().__init__(price, icon_path, bot_id, **kwargs)
         self.bot_token = bot_token
         self.url = os.environ['FRIENDLY_BACKEND_ENDPOINT']
         self.registered = True
