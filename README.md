@@ -113,6 +113,10 @@ echo 'export MONGO_URI=mongodb://localhost:27017' >> ~/.bashrc
 source ~/.bashrc
 ```
 
+#### Recommended 
+
+Add indexes to your database so the message history fetches aren't slow. If you don't know how to do that ask ChatGPT. I'll try and figure out the simplest way to do it via commands and post them, but currently I use a mongodb gui to do it. 
+
 
 ### Install & Launch on Ubuntu Linux (summary of docs above)
 
