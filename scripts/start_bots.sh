@@ -10,5 +10,5 @@ APP_PID=$!
 echo $APP_PID > app.pid
 
 echo "App started with PID $APP_PID"
-
+echo "To stop the bot, run ./stop_bots.sh "
 

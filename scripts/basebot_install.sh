@@ -179,7 +179,14 @@ read -p "Start demo bot [y/N]? " choice
 case "$choice" in 
   y|Y ) 
     echo "Starting bot(s) ..."
-    ./start_bots.sh
+    nohup uvicorn main:app --port 8000 --host 0.0.0.0 > bot.log 2>&1 &
+
+    # Get the PID of the app process
+    APP_PID=$!
+
+    # Save the PID to a file
+    echo $APP_PID > app.pid
+    echo "App started with PID $APP_PID"
     echo "To stop the bot, run ./stop_bots.sh "
 
     # Insert test script code here
