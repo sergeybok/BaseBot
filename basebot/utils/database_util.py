@@ -61,6 +61,7 @@ class JsonUtil(DbUtil):
         self.messages: Dict[List[Dict]] = {}
         self.bot_id = bot_id
         self.json_name = bot_id + '_messages.json'
+        self.load_messages()
 
     def save_messages(self):
         with open(self.json_name, 'w') as f:
