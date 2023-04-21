@@ -39,22 +39,23 @@ echo "dist/" >> .gitignore
 echo "*.egg-info/" >> .gitignore
 
 # Create main project file
-touch main.py
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/demo_app.py" 
 
 # Create test directory and test file
-zsh tests.sh
+# curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/tests.sh" | sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/tests.sh"
 
-# Setup OpenAI API key
-zsh openai_sh.sh
+# Check if OpenAI API key exists
+if [ ! -v OPENAI_API_KEY ]; then
+  # Call another script to set the environment variable
+  # sh openai_sh.sh
+  curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/openai_install.sh" | sh
+fi
+
 
 # Setup ngrok to let anyone access your bot with a internet-facing url
-ngrok_install.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/ngrok_install.sh" | sh
 
-# Initialize Sphinx documentation
-sphinx-quickstart
-
-# Open project directory in VSCode
-code .
 
 # Exit virtual environment
 deactivate
