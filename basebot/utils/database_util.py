@@ -98,7 +98,7 @@ class JsonUtil(DbUtil):
             filtered_messages = sorted(filtered_messages, key=lambda k: k['timestamp'])
         return filtered_messages[:limit]
     
-    def get_chat_messages(self, name:str, user_id:str, limit:int=5, before_ts=None) -> List[TheMessage]:
+    def get_chat_messages(self, bot:str, user_id:str, limit:int=5, before_ts=None) -> List[TheMessage]:
         o = self.get_message_history(user_id, limit, before_ts)
         return [TheMessage.parse_obj(m) for m in o]
 
