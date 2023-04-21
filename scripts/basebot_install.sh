@@ -178,8 +178,10 @@ fi
 read -p "Start demo bot [y/N]? " choice
 case "$choice" in 
   y|Y ) 
-    echo "Starting bot, to stop it run  ./stop_bots.sh "
-    sh start_bots.sh
+    echo "Starting bot(s) ..."
+    ./start_bots.sh
+    echo "To stop the bot, run ./stop_bots.sh "
+
     # Insert test script code here
     read -p "Start test script [y/N]? " choice
     case "$choice" in 
