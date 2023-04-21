@@ -2,3 +2,4 @@ fastapi
 Pillow
 pymongo
 numpy
+uvicorn
