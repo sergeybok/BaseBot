@@ -118,11 +118,13 @@ fi
 if [ -z "${OPENAI_API_KEY}" ]; then 
   echo "No OpenAI api key, initializing WhyBot"
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_why_bot.py" >> main.py
-  sed -i "s/WhyBot/${project_dir}/g" main.py 
+  sed -i "s/WhyBot/${project_dir}/g" main.py >> tmp_main.py
+  mv tmp_main.py main.py
 else 
   echo "Has OpenAI api key, initializing ChatGPTBot"
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_chatgpt.py" >> main.py
-  sed -i "s/ChatGPTBot/${project_dir}/g" main.py 
+  sed "s/ChatGPTBot/${project_dir}/g" main.py >> tmp_main.py
+  mv tmp_main.py main.py
 fi
 ############# OPENAI over
 
