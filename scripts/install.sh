@@ -51,7 +51,7 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop
 if [ ! -v OPENAI_API_KEY ]; then
   # Call another script to set the environment variable
   # sh openai_sh.sh
-  curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/openai_install.sh" | sh
+  curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" | sh
 fi
 
 if [ ! -v OPENAI_API_KEY ]; then

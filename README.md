@@ -5,6 +5,10 @@ To install
     pip install git+https://github.com/sergeybok/BaseBot.git
 
 
+### Experimental Quickstart
+
+    curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" | sh
+
 ## To download mobile app
 
 Provide links to iOS and Android app.
