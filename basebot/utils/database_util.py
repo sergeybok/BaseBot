@@ -104,10 +104,13 @@ class JsonUtil(DbUtil):
 
     def _save_chat_message(self, bot_name, message: Dict):
         if message['sender_id'] == bot_name:
-            self.messages['recpient_id'].append(message)
+            user_id = message['recipient_id']
         else:
-            self.messages['sender_id'].append(message)
-        self.save_messages('messages.json')
+            user_id = message['sender_id']
+        if user_id not in self.messages:
+            self.messages[user_id] = []
+        self.messages[user_id].append(message)
+        self.save_messages(self.json_name)
 
     def save_chat_message(self, name:str, message:TheMessage) -> None:
         self._save_chat_message(name, message.dict())
