@@ -54,7 +54,7 @@ Note that in BaseBot as well as Friendly AI app, all IDs are generated with UUID
 
 ### The demo app (Vanilla ChatGPT)
 
-This is an example of a `demo_app.py` file that is found in this repo that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
+This is an example of a `demo_chatgpt.py` file that is found in this repo (in /scripts) that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
 ``` python
 from basebot import BaseBotWithLocalDb, BaseBot
@@ -98,10 +98,10 @@ There are also a few functions that are recommended to override for any bot:
 
 ### To start your bot
 
-From your directory or repo where you have the above demo_app.py file, you would start it with the following command:
+See `scripts/start_bots.sh` and `scripts/stop_bots.sh` since that may be simpler. From your directory or repo where you have the above demo_chatgpt.py file, you would start it with the following command:
 
 ```
-uvicorn demo_app:app --port 8000 --host 0.0.0.0
+uvicorn demo_chatgpt:app --port 8000 --host 0.0.0.0
 ```
 
 The uvicorn command expects FILENAME:APPLICATION_VARIABLE_NAME where the FILENAME is without extension and the variable name is the `app = BaseBot.start_app()` variable. See [FastAPI deployment guide for more details](https://fastapi.tiangolo.com/deployment/manually/).
