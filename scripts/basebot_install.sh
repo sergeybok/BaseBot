@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Define project name and directory
+
+
+echo ">>>>>>>>>>>>>>"
 echo "Enter project name:"
 read project_name
 project_dir="$project_name"
@@ -60,6 +63,7 @@ if [ -z "${OPENAI_API_KEY}" ]; then
   # sh openai_sh.sh
   # curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" | bash
 
+  echo ">>>>>>>>>>>>>>"
   read -p "Enter your OpenAI API key: " OPENAI_API_KEY
   if [ -z "$OPENAI_API_KEY" ]
   then
@@ -143,6 +147,7 @@ if [ -z "$NGROK_AUTH_TOKEN" ]
 then
     # echo "ngrok is not configured with an auth token. Please run 'ngrok authtoken <your_auth_token>' to configure it."
     # Authenticate with ngrok
+    echo ">>>>>>>>>>>>>>"
     echo "Enter your ngrok authtoken:"
     read authtoken
     if [ -z "$authtoken" ]
@@ -162,19 +167,9 @@ fi
 echo "BaseBot: ${project_dir} project initialized successfully!"
 
 
-echo "Start demo bot [y/N]? "
-read SHOULD_START_TEST
-if [ -z "$SHOULD_START_TEST" ]
-then
-    echo "Not starting test script"
-    # Exit virtual environment
-else
-    echo "Starting test script"
-    python3 test.py
-fi
 
 
-
+echo ">>>>>>>>>>>>>>"
 read -p "Start demo bot [y/N]? " choice
 case "$choice" in 
   y|Y ) 
@@ -190,6 +185,7 @@ case "$choice" in
     echo "To stop the bot, run ./stop_bots.sh "
 
     # Insert test script code here
+    echo ">>>>>>>>>>>>>>"
     read -p "Start test script [y/N]? " choice
     case "$choice" in 
       y|Y ) 
