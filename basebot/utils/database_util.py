@@ -110,7 +110,7 @@ class JsonUtil(DbUtil):
         if user_id not in self.messages:
             self.messages[user_id] = []
         self.messages[user_id].append(message)
-        self.save_messages(self.json_name)
+        self.save_messages()
 
     def save_chat_message(self, name:str, message:TheMessage) -> None:
         self._save_chat_message(name, message.dict())
