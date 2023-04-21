@@ -18,6 +18,7 @@ pip install --upgrade pip
 pip install wheel
 pip install pytest
 pip install coverage
+pip install --upgrade openai
 pip install git+https://github.com/sergeybok/BaseBot.git
 
 
@@ -73,11 +74,12 @@ if [ -z "${OPENAI_API_KEY}" ]; then
         # Check if the Zsh configuration file exists
         if [ -f ~/.zshrc ]; then
           echo "export OPENAI_API_KEY=\"$OPENAI_API_KEY\"" >> ~/.zshrc
-          source ~/.zshrc
+          # source ~/.zshrc
+          export OPENAI_API_KEY=$OPENAI_API_KEY
           echo "OpenAI API key added to .zshrc"
         elif [ -f ~/.zprofile ]; then
           echo "export OPENAI_API_KEY=\"$OPENAI_API_KEY\"" >> ~/.zprofile
-          source ~/.zprofile
+          export OPENAI_API_KEY=$OPENAI_API_KEY
           echo "OpenAI API key added to .zprofile"
         else
           echo "Unable to find Zsh configuration file"

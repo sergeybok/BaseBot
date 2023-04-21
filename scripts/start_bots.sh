@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start the app in the background and save the logs to a file
-nohup uvicorn app:app > bot.log 2>&1 &
+nohup uvicorn main:app --port 8000 --host 0.0.0.0 > bot.log 2>&1 &
 
 # Get the PID of the app process
 APP_PID=$!
