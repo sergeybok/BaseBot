@@ -72,11 +72,11 @@ if [ -z "${OPENAI_API_KEY}" ]; then
 
         # Check if the Zsh configuration file exists
         if [ -f ~/.zshrc ]; then
-          echo "export OPENAI_API_KEY=$OPENAI_API_KEY" >> ~/.zshrc
+          echo "export OPENAI_API_KEY=\"$OPENAI_API_KEY\"" >> ~/.zshrc
           source ~/.zshrc
           echo "OpenAI API key added to .zshrc"
         elif [ -f ~/.zprofile ]; then
-          echo "export OPENAI_API_KEY=$OPENAI_API_KEY" >> ~/.zprofile
+          echo "export OPENAI_API_KEY=\"$OPENAI_API_KEY\"" >> ~/.zprofile
           source ~/.zprofile
           echo "OpenAI API key added to .zprofile"
         else
@@ -87,11 +87,11 @@ if [ -z "${OPENAI_API_KEY}" ]; then
       else
         # Check if the Bash configuration file exists
         if [ -f ~/.bashrc ]; then
-          echo "export OPENAI_API_KEY=$OPENAI_API_KEY" >> ~/.bashrc
+          echo "export OPENAI_API_KEY=\"$OPENAI_API_KEY\"" >> ~/.bashrc
           source ~/.bashrc
           echo "OpenAI API key added to .bashrc"
         elif [ -f ~/.bash_profile ]; then
-          echo "export OPENAI_API_KEY=$OPENAI_API_KEY" >> ~/.bash_profile
+          echo "export OPENAI_API_KEY=\"$OPENAI_API_KEY\"" >> ~/.bash_profile
           source ~/.bash_profile
           echo "OpenAI API key added to .bash_profile"
         else
