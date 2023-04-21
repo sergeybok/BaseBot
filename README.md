@@ -9,7 +9,7 @@ To install
 
 This currently only has been tested on Mac and Ubuntu Linux. It asks for your bot name and creates bot project directory with a virtualenv, asks for OpenAI key if not present (but this is optional), and ngrok key (also optional), and depending on if you gave an openai key or not, it starts you off with a simple ChatGPT bot, or a WhyBot that has no LLM and just repeats what you said skeptically. Also provides helpful scripts to start and stop bots in the background.
 
-    wget "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/basebot_install.sh" && sh basebot_install.sh
+    curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/basebot_install.sh" >> basebot_install.sh && sh basebot_install.sh
 
 ## To download mobile app
 
