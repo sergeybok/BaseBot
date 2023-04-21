@@ -45,23 +45,28 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/test
 
 
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/start_bots.sh" >> start_bots.sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop_bots.sh" >> star_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop_bots.sh" >> stop_bots.sh
+chmod +x start_bots.sh
+chmod +x stop_bots.sh
+
 
 # Check if OpenAI API key exists
-if [ ! -v OPENAI_API_KEY ]; then
+# if [ ! -v OPENAI_API_KEY ]; then
+if [ -z "${OPENAI_API_KEY}" ]; then 
   # Call another script to set the environment variable
   # sh openai_sh.sh
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" | sh
 fi
 
-if [ ! -v OPENAI_API_KEY ]; then
+# if [ ! -v OPENAI_API_KEY ]; then
+if [ -z "${OPENAI_API_KEY}" ]; then 
   echo "No OpenAI api key, initializing WhyBot"
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_why_bot.py" >> main.py
-  sed 's/WhyBot/${project_dir}/g' main.py
+  sed "s/WhyBot/${project_dir}/g" main.py >> main.py
 else 
   echo "Has OpenAI api key, initializing ChatGPTBot"
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_chatgpt.py" >> main.py
-  sed 's/ChatGPTBot/${project_dir}/g' main.py
+  sed "s/ChatGPTBot/${project_dir}/g" main.py >> main.py
 fi
 
 # Setup ngrok to let anyone access your bot with a internet-facing url
@@ -88,7 +93,7 @@ fi
 read -p "Start demo bot [y/N]? " choice
 case "$choice" in 
   y|Y ) 
-    echo "Starting bot"
+    echo "Starting bot, to stop it run  ./stop_bots.sh "
     sh start_bots.sh
     # Insert test script code here
     read -p "Start test script [y/N]? " choice
