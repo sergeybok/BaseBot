@@ -24,9 +24,14 @@ then
     # Authenticate with ngrok
     echo "Enter your ngrok authtoken:"
     read authtoken
-    ngrok authtoken $authtoken
+    if [ -z "$authtoken" ]
+    then
+        echo "Skipping ngrok setup"
+    else
+        ngrok authtoken $authtoken
+        echo "ngrok is now set up and authenticated!"
+    fi
 
-    echo "ngrok is now set up and authenticated!"
 fi
 
 

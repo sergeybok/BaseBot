@@ -6,7 +6,7 @@ import os
 import requests
 
 from ..utils.image_utils import img_to_b64_string
-from ..utils.database_util import MongoUtil
+from ..utils.database_util import MongoUtil, DbUtil, JsonUtil
 from .the_message import TheMessage, MessageWrapper
 from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
 from .web_models import TemplateRequest, TemplateResponse, Template
@@ -275,12 +275,15 @@ class BaseBot:
 
 
 class BaseBotWithLocalDb(BaseBot):
-    def __init__(self, db_util: MongoUtil = None, **kwargs):
+    def __init__(self, db_util: DbUtil = None, **kwargs):
         super().__init__(**kwargs)
         if db_util:
             self.db_util = db_util
         else:
-            self.db_util = MongoUtil()
+            if 'MONGO_URI' in os.environ:
+                self.db_util = MongoUtil()
+            else:
+                self.db_util = JsonUtil(bot_id=self.bot_id)
     
     def save_chat_message(self, message: TheMessage):
         self.db_util.save_chat_message(self.name, message)

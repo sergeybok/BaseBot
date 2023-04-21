@@ -39,11 +39,11 @@ echo "dist/" >> .gitignore
 echo "*.egg-info/" >> .gitignore
 
 # Create main project file
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_app.py" 
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_app.py" >> app.py
 
 # Create test directory and test file
 # curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/tests.sh" | sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/test.py"
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/test.py" >> test.py
 
 # Check if OpenAI API key exists
 if [ ! -v OPENAI_API_KEY ]; then
