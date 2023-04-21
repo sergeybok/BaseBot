@@ -45,11 +45,11 @@ echo "*.egg-info/" >> .gitignore
 
 # Create test directory and test file
 # curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/tests.sh" | sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/test.py" >> test.py
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/test.py" > test.py
 
 
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/start_bots.sh" >> start_bots.sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop_bots.sh" >> stop_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/start_bots.sh" > start_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop_bots.sh" > stop_bots.sh
 chmod +x start_bots.sh
 chmod +x stop_bots.sh
 
@@ -117,11 +117,11 @@ fi
 if [ -z "${OPENAI_API_KEY}" ]; then 
   echo "No OpenAI api key, initializing WhyBot"
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_why_bot.py" >> main.py
-  sed "s/WhyBot/${project_dir}/g" main.py >> main.py
+  sed "s/WhyBot/${project_dir}/g" main.py > main.py
 else 
   echo "Has OpenAI api key, initializing ChatGPTBot"
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_chatgpt.py" >> main.py
-  sed "s/ChatGPTBot/${project_dir}/g" main.py >> main.py
+  sed "s/ChatGPTBot/${project_dir}/g" main.py > main.py
 fi
 ############# OPENAI over
 
