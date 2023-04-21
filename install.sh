@@ -45,7 +45,10 @@ touch main.py
 zsh tests.sh
 
 # Setup OpenAI API key
-zsh openai-sh.sh
+zsh openai_sh.sh
+
+# Setup ngrok to let anyone access your bot with a internet-facing url
+ngrok_install.sh
 
 # Initialize Sphinx documentation
 sphinx-quickstart
