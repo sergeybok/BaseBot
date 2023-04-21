@@ -64,6 +64,7 @@ if [ -z "${OPENAI_API_KEY}" ]; then
   # curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" | bash
 
   echo ">>>>>>>>>>>>>>"
+  echo "See https://platform.openai.com/account/api-keys for more details" 
   read -p "Enter your OpenAI API key: " OPENAI_API_KEY
   if [ -z "$OPENAI_API_KEY" ]
   then
@@ -148,6 +149,7 @@ then
     # echo "ngrok is not configured with an auth token. Please run 'ngrok authtoken <your_auth_token>' to configure it."
     # Authenticate with ngrok
     echo ">>>>>>>>>>>>>>"
+    echo "Go to https://ngrok.com/docs/getting-started/#step-3-connect-your-agent-to-your-ngrok-account for more details " 
     echo "Enter your ngrok authtoken:"
     read authtoken
     if [ -z "$authtoken" ]
