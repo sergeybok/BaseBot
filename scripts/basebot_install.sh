@@ -65,7 +65,7 @@ if [ -z "${OPENAI_API_KEY}" ]; then
 
   echo ">>>>>>>>>>>>>>"
   echo "See https://platform.openai.com/account/api-keys for more details" 
-  read -p "Enter your OpenAI API key: " OPENAI_API_KEY
+  read -p "Enter your OpenAI API key [optional]: " OPENAI_API_KEY
   if [ -z "$OPENAI_API_KEY" ]
   then
       echo "Skipping OpenAI setup"
@@ -150,7 +150,7 @@ then
     # Authenticate with ngrok
     echo ">>>>>>>>>>>>>>"
     echo "Go to https://ngrok.com/docs/getting-started/#step-3-connect-your-agent-to-your-ngrok-account for more details " 
-    echo "Enter your ngrok authtoken:"
+    echo "Enter your ngrok authtoken [optional]:"
     read authtoken
     if [ -z "$authtoken" ]
     then
