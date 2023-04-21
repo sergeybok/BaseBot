@@ -286,11 +286,11 @@ class BaseBotWithLocalDb(BaseBot):
                 self.db_util = JsonUtil(bot_id=self.bot_id)
     
     def save_chat_message(self, message: TheMessage):
-        self.db_util.save_chat_message(self.name, message)
+        self.db_util.save_chat_message(self.bot_id, message)
         return
 
     def get_message_history(self, user_id:str, limit:int=10, before_ts:float=None, descending:bool=True) -> List[TheMessage]:
-        messages = self.db_util.get_chat_messages(name=self.name, user_id=user_id,limit=limit, before_ts=before_ts)
+        messages = self.db_util.get_chat_messages(bot=self.bot_id, user_id=user_id,limit=limit, before_ts=before_ts)
         if not descending:
             messages = list(reversed(messages))
         return messages
