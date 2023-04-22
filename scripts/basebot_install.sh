@@ -58,7 +58,7 @@ chmod +x openai_install.sh
 sh openai_install.sh "$project_dir"
 
 # Prompt user to setup ngrok
-read -p "Setup ngrok [y/N]?" choice
+read -p "Setup ngrok [y/N]? " choice
 case "$choice" in 
   y|Y ) 
     # Setup ngrok to let anyone access your bot with a internet-facing url
