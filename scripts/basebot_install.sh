@@ -192,7 +192,9 @@ case "$choice" in
     echo ">>>>>>>>>>>>>>"
     read -p "Start test script [y/N]? " choice
     case "$choice" in 
-      y|Y ) 
+      y|Y )
+        echo "Encoding local bot url into a qr code..."
+        curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/share_localhost.sh" | sh
         echo "Starting test script..."
         python3 test.py
         # Insert test script code here
