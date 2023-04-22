@@ -1,11 +1,14 @@
+#!/bin/bash
+
 # create tests directory and test case file
 mkdir tests
 touch tests/test_main.py
 
 # add continuity test
-echo '
+cat << EOF > tests/test_main.py
 import requests 
 import argparse
+import uuid
 
 from basebot import TheMessage, MessageWrapper, MessageContents
 
@@ -13,8 +16,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, help="localhost:{port}", default=8000)
 args = parser.parse_args()
 
-bot_name = input("Which bot are you trying to test? (NOTE: this should match at least one of the bots passed as arguments to  `BaseBot.start_app(bot)` in your main.py file)\n\nBotName: ")
-local_uuid = "test1f3a-97ee-4e7e-8242-7b1d202c0fb5"
+bot_name = input("Which bot are you trying to test?\n\nBotName: ")
+local_uuid = str(uuid.uuid4())
 url = f"http://localhost:{args.port}/bots/{bot_name}"
 resp = requests.get(url+"/about").json()
 bot_id = resp["bot_id"]
@@ -39,4 +42,4 @@ def get_message_to():
 
 while True:
     get_message_to()
-' > tests/test_main.py
+EOF
