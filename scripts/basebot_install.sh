@@ -37,8 +37,9 @@ echo "build/" >> .gitignore
 echo "dist/" >> .gitignore
 echo "*.egg-info/" >> .gitignore
 
-# Create test directory and test file
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/tests.sh" | sh
+# Create tests directory and test case file
+mkdir tests
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/test.py" > ./tests/test.py
 
 # Create scripts directory
 mkdir "scripts"

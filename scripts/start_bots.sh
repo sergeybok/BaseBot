@@ -26,7 +26,7 @@ case "$choice" in
         deactivate
         # Start test script
         echo "Starting test script..."
-        python3 ../tests/test_main.py
+        python3 ../tests/test.py
         ;;
       * ) 
         exit 0
