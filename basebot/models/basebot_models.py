@@ -112,6 +112,7 @@ class BaseBot:
             self.bot_id = bot_id
         else:
             self.bot_id = self.name
+        self.endpoint_root = f'/bots/{self.__class__.__name__}'
         self.endpoint_respond = f'/bots/{self.__class__.__name__}/respond'
         self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
         self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
@@ -262,11 +263,14 @@ class BaseBot:
                 icon = None
                 pass
         return AboutResponse(name=self.name, icon=icon, bot_id=self.bot_id, price=self.price)
+    def get_root(self):
+        return { 'Bot': self.name }
     def add_endpoints(self, app:FastAPI):
         """
         Adds the routing for the endpoints and corresponding functions
         """
         print('\tAdding: ', f'/bots/{self.__class__.__name__}')
+        app.add_api_route(self.endpoint_root, self.get_root, methods=['GET'])
         app.add_api_route(self.endpoint_respond, self._respond,  methods=["POST"], response_model=TheMessage)
         app.add_api_route(self.endpoint_about, self.about,  methods=["GET"])
         app.add_api_route(self.endpoint_history, self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
