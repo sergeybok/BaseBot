@@ -1,10 +1,10 @@
-import socket
-
 import qrcode
+import subprocess
 
-# Get the hostname and IP address of the current machine
-hostname = socket.gethostname()
-ip_address = socket.gethostbyname(hostname)
+# Get the hostname and IP (non loopback) address of the current machine
+cmd = "ifconfig | grep 'inet ' | grep -Fv 127.0.0.1 | awk '{print $2}'"
+output = subprocess.check_output(cmd, shell=True)
+ip_address = output.decode().strip()
 
 # Generate a QR code containing the URL for localhost
 url = f"http://{ip_address}:8000"
