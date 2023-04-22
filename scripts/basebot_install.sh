@@ -54,7 +54,7 @@ chmod +x stop_bots.sh
 # Setup OpenAI
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/openai_install.sh" > openai_install.sh
 chmod +x openai_install.sh
-sh openai_install.sh
+sh openai_install.sh "$project_dir"
 
 # Prompt user to setup ngrok
 read -p "Setup ngrok [y/N]?" choice

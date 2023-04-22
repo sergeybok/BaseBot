@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Project bot name
+project_dir="$1"
+
 # Check if OpenAI API key exists
 if [ -z "${OPENAI_API_KEY}" ]; then 
   # Call another script to set the environment variable
