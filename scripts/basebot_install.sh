@@ -14,12 +14,13 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install required packages
-pip install --upgrade pip
-pip install wheel
-pip install pytest
-pip install coverage
-pip install --upgrade openai
-pip install git+https://github.com/sergeybok/BaseBot.git
+echo "Installing required packages..."
+pip install -q --upgrade pip
+pip install -q wheel
+pip install -q pytest
+pip install -q coverage
+pip install -q --upgrade openai
+pip install -q git+https://github.com/sergeybok/BaseBot.git
 
 # Create requirements file
 touch requirements.txt

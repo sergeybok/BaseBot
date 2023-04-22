@@ -17,8 +17,8 @@ source "$venv_name/bin/activate"
 # Check if the required Python packages are installed
 if ! python3 -c "import qrcode" &> /dev/null; then
     # If not, install them using pip
-    echo "Installing required Python packages..."
-    pip install qrcode
+    echo "Installing qrcode..."
+    pip install -q qrcode
 fi
 
 # Run the share_localhost_qr.py script
