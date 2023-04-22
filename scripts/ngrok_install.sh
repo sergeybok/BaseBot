@@ -1,8 +1,5 @@
 #!/bin/bash
 
-
-#!/bin/bash
-
 # Check if ngrok is installed
 if ! command -v ngrok &> /dev/null
 then
@@ -20,9 +17,9 @@ fi
 # Check if ngrok has an auth token
 if [ -z "$NGROK_AUTH_TOKEN" ]
 then
-    # echo "ngrok is not configured with an auth token. Please run 'ngrok authtoken <your_auth_token>' to configure it."
     # Authenticate with ngrok
-    echo "Enter your ngrok authtoken:"
+    echo "Go to https://ngrok.com/docs/getting-started/#step-3-connect-your-agent-to-your-ngrok-account for more details " 
+    echo "Enter your ngrok authtoken [optional]:"
     read authtoken
     if [ -z "$authtoken" ]
     then
@@ -31,7 +28,4 @@ then
         ngrok authtoken $authtoken
         echo "ngrok is now set up and authenticated!"
     fi
-
 fi
-
-
