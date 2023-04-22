@@ -38,20 +38,20 @@ echo "dist/" >> .gitignore
 echo "*.egg-info/" >> .gitignore
 
 # Create test directory and test file
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/tests.sh" | sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/tests.sh" | sh
 
 # Create scripts directory
 mkdir "scripts"
 cd "scripts"
 
 # Create start and stop scripts
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/start_bots.sh" > start_bots.sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/stop_bots.sh" > stop_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/start_bots.sh" > start_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop_bots.sh" > stop_bots.sh
 chmod +x start_bots.sh
 chmod +x stop_bots.sh
 
 # Setup OpenAI
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/openai_install.sh" > openai_install.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" > openai_install.sh
 chmod +x openai_install.sh
 sh openai_install.sh
 
@@ -60,14 +60,14 @@ read -p "Setup ngrok [y/N]?" choice
 case "$choice" in 
   y|Y ) 
     # Setup ngrok to let anyone access your bot with a internet-facing url
-    curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/ngrok_install.sh" > ngrok_install.sh
+    curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/ngrok_install.sh" > ngrok_install.sh
     chmod +x ngrok_install.sh
     sh ngrok_install.sh
 esac
 
 # Setup localhost sharing
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/share_localhost.sh" > share_localhost.sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev/scripts/share_localhost.py" > share_localhost.py
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/share_localhost.sh" > share_localhost.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/share_localhost.py" > share_localhost.py
 chmod +x share_localhost.sh
 
 # Success!
