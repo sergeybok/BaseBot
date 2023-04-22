@@ -3,6 +3,8 @@
 read -p "Start demo bot [y/N]? " choice
 case "$choice" in 
   y|Y ) 
+    # Return to project root
+    cd ..
     # Start the app in the background and save the logs to a file
     echo "Starting bot(s) ..."
     nohup uvicorn main:app --port 8000 --host 0.0.0.0 > bot.log 2>&1 &
@@ -21,12 +23,12 @@ case "$choice" in
       y|Y )
         # Encode local bot url into a qr code
         echo "Encoding local bot url into a qr code..."
-        source ../venv/bin/activate
-        sh share_localhost.sh
+        source venv/bin/activate
+        sh ./scripts/share_localhost.sh
         deactivate
         # Start test script
         echo "Starting test script..."
-        python3 ../tests/test.py
+        python3 ./tests/test.py
         ;;
       * ) 
         exit 0
