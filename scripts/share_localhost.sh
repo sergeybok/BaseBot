@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the name of the virtual environment
-venv_name="../venv"
+venv_name="venv"
 
 # Check if the virtual environment exists
 if [ ! -d "$venv_name" ]; then
@@ -21,9 +21,9 @@ if ! python3 -c "import qrcode" &> /dev/null; then
     pip install -q qrcode
 fi
 
-# Run the share_localhost_qr.py script
+# Run the share_localhost.py script
 echo "Running share_localhost.py..."
-python3 share_localhost.py
+python3 scripts/share_localhost.py
 
 # Deactivate the virtual environment
 echo "Deactivating virtual environment..."
