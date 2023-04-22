@@ -13,7 +13,7 @@ case "$choice" in
     APP_PID=$!
 
     # Save the PID to a file
-    echo $APP_PID > ../app.pid
+    echo $APP_PID > app.pid
     echo "App started with PID $APP_PID"
     echo "To stop the bot, run ./stop_bots.sh "
 
