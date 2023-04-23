@@ -3,12 +3,9 @@ import argparse
 import requests
 from basebot import MessageContents, TheMessage
 
-
 local_uuid = 'test1f3a-97ee-4e7e-8242-7b1d202c0fb5'
 
-
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', type=int, help='localhost:{port}', default=8000)
     args = parser.parse_args()
@@ -18,7 +15,6 @@ if __name__ == '__main__':
     resp = requests.get(url+'/about').json()
     bot_id = resp['bot_id']
 
-    
     def message_init():
         import time
         import uuid
