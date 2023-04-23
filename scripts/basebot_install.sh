@@ -20,6 +20,7 @@ pip install -q wheel
 pip install -q pytest
 pip install -q coverage
 pip install -q --upgrade openai
+pip install -q qrcode
 pip install -q git+https://github.com/sergeybok/BaseBot.git
 
 # Create requirements file
@@ -75,5 +76,12 @@ chmod +x share_localhost.sh
 # Success!
 echo "BaseBot: ${project_dir} project initialized successfully!"
 
+# Return to project root
+cd ..
+
 # Start the app in the background, show qr with local network address, and save the logs to a file
-sh start_bots.sh
+read -p "Start demo bot [y/N]? " choice
+case "$choice" in 
+  y|Y ) 
+    sh scripts/start_bots.sh
+esac
