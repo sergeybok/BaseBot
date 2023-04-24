@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Define project name and directory
-echo "Enter project name:"
+# echo "Enter project name:"
+echo -e "\e[1;31m Enter your bot name: \e[0m" 
 read project_name
 project_dir="$project_name"
 
