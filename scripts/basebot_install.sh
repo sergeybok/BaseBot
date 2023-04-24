@@ -56,7 +56,7 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev-reorganize-in
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev-reorganize-install/scripts/stop_bots.sh" > stop_bots.sh
 chmod +x start_bots.sh
 chmod +x stop_bots.sh
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev-reorganize-install/scripts/start_bots_background.sh" > start_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/dev-reorganize-install/scripts/start_bots_background.sh" > start_bots_background.sh
 chmod +x start_bots_background.sh
 
 # Setup OpenAI
