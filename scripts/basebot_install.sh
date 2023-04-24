@@ -1,8 +1,11 @@
 #!/bin/bash
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
 # Define project name and directory
 # echo "Enter project name:"
-echo -e "\e[1;32m Enter your bot name: \e[0m" 
+echo -e "\e[1;32m ${bold}Enter your bot name${normal}: \e[0m" 
 read project_name
 project_dir="$project_name"
 
