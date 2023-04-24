@@ -5,7 +5,7 @@ normal=$(tput sgr0)
 
 # Define project name and directory
 # echo "Enter project name:"
-echo -e "\e[1;32m ${bold}Enter your bot name${normal}: \e[0m" 
+echo "${bold}Enter your bot name${normal}:" 
 read project_name
 project_dir="$project_name"
 
@@ -65,7 +65,7 @@ chmod +x openai_install.sh
 sh openai_install.sh "$project_dir"
 
 # Prompt user to setup ngrok
-read -p "Setup ngrok [y/N]? " choice
+read -p "${bold}Setup ngrok [y/N]? ${normal} " choice
 case "$choice" in 
   y|Y ) 
     # Setup ngrok to let anyone access your bot with a internet-facing url
@@ -86,7 +86,7 @@ echo "BaseBot: ${project_dir} project initialized successfully!"
 cd ..
 
 # Start the app in the background, show qr with local network address, and save the logs to a file
-read -p "Start demo bot [y/N]? " choice
+read -p "${bold}Start demo bot [y/N]?${normal} " choice
 case "$choice" in 
   y|Y ) 
     sh scripts/start_bots_background.sh
@@ -95,7 +95,7 @@ esac
 
 
 # Prompt user to start test script
-read -p "Start test script [y/N]? " choice
+read -p "${bold}Start test script [y/N]? ${normal}" choice
 case "$choice" in 
   y|Y )
     
