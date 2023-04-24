@@ -1,7 +1,11 @@
 #!/bin/bash
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
 # Define project name and directory
-echo "Enter project name:"
+# echo "Enter project name:"
+echo "${bold}Enter your bot name${normal}:" 
 read project_name
 project_dir="$project_name"
 
@@ -14,7 +18,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install required packages
-echo "Installing required packages..."
+echo "Created VirtulEnv and installing required packages..."
 pip install -q --upgrade pip
 pip install -q wheel
 pip install -q pytest
@@ -52,6 +56,8 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/star
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/stop_bots.sh" > stop_bots.sh
 chmod +x start_bots.sh
 chmod +x stop_bots.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/start_bots_background.sh" > start_bots_background.sh
+chmod +x start_bots_background.sh
 
 # Setup OpenAI
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" > openai_install.sh
@@ -59,7 +65,7 @@ chmod +x openai_install.sh
 sh openai_install.sh "$project_dir"
 
 # Prompt user to setup ngrok
-read -p "Setup ngrok [y/N]? " choice
+read -p "${bold}Setup ngrok [y/N]? ${normal} " choice
 case "$choice" in 
   y|Y ) 
     # Setup ngrok to let anyone access your bot with a internet-facing url
@@ -80,8 +86,20 @@ echo "BaseBot: ${project_dir} project initialized successfully!"
 cd ..
 
 # Start the app in the background, show qr with local network address, and save the logs to a file
-read -p "Start demo bot [y/N]? " choice
+read -p "${bold}Start demo bot [y/N]?${normal} " choice
 case "$choice" in 
   y|Y ) 
-    sh scripts/start_bots.sh
+    sh scripts/start_bots_background.sh
+    python3 scripts/share_localhost.py --bot_name $project_dir
+esac
+
+
+# Prompt user to start test script
+read -p "${bold}Start test script [y/N]? ${normal}" choice
+case "$choice" in 
+  y|Y )
+    
+    # Start test script
+    echo "Starting test script..."
+    python3 ./tests/test.py
 esac

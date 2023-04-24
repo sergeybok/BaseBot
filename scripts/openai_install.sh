@@ -1,13 +1,16 @@
 #!/bin/bash
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
 # Project bot name
 project_dir="$1"
 
 # Check if OpenAI API key exists
 if [ -z "${OPENAI_API_KEY}" ]; then 
   # Call another script to set the environment variable
-  echo "See https://platform.openai.com/account/api-keys for more details" 
-  read -p "Enter your OpenAI API key [optional]: " OPENAI_API_KEY
+  echo "${bold}See https://platform.openai.com/account/api-keys for more details ${normal}" 
+  read -p "${bold}Enter your OpenAI API key [optional]${normal}: " OPENAI_API_KEY
   if [ -z "$OPENAI_API_KEY" ]
   then
       echo "Skipping OpenAI setup"
