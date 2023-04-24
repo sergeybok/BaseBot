@@ -3,7 +3,7 @@ import subprocess
 import argparse
 
 
-ROOT = '/bots'
+ROOT = 'bots'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--port', type=str, default='8000')
