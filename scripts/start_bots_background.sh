@@ -10,6 +10,7 @@ APP_PID=$!
 # Save the PID to a file
 echo $APP_PID > app.pid
 echo "App started with PID $APP_PID"
-echo "To stop the bot, run ./stop_bots.sh "
+# echo "To stop the bot, run ./stop_bots.sh "
+echo -e "\e[1;31m To stop the bot, run ./stop_bots.sh  \e[0m" 
 
 
