@@ -6,7 +6,7 @@ project_dir="$1"
 # Check if OpenAI API key exists
 if [ -z "${OPENAI_API_KEY}" ]; then 
   # Call another script to set the environment variable
-  echo "See https://platform.openai.com/account/api-keys for more details" 
+  echo -e "e[1;32m See https://platform.openai.com/account/api-keys for more details \e[0m" 
   read -p "Enter your OpenAI API key [optional]: " OPENAI_API_KEY
   if [ -z "$OPENAI_API_KEY" ]
   then
