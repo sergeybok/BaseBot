@@ -278,6 +278,8 @@ class BaseBot:
 
 
 
+
+
 class BaseBotWithLocalDb(BaseBot):
     def __init__(self, db_util: DbUtil = None, **kwargs):
         super().__init__(**kwargs)
@@ -286,6 +288,12 @@ class BaseBotWithLocalDb(BaseBot):
         else:
             if 'MONGO_URI' in os.environ:
                 self.db_util = MongoUtil()
+                try:
+                    self.db_util.create_index_if_not_exists(self.bot_id, 'sender_id')
+                    self.db_util.create_index_if_not_exists(self.bot_id, 'recipient_id')
+                except Exception as e:
+                    print('Failed to create indexes with exception: ', e)
+                
             else:
                 self.db_util = JsonUtil(bot_id=self.bot_id)
     

@@ -1,5 +1,6 @@
 import os 
 import pymongo
+from pymongo import DESCENDING
 from bson import ObjectId
 from typing import Optional, List
 import json, time
@@ -51,6 +52,22 @@ class MongoUtil(DbUtil):
             messages.append(TheMessage.parse_obj(msg_dict))
         messages = sorted(messages, key=lambda m: m.timestamp, reverse=True)[:limit]
         return messages
+
+    def create_index_if_not_exists(self, bot:str, field_name:str):
+
+        # # Get a reference to the specified collection
+        collection = self.mongo.db[bot]
+
+        # Check if the index already exists
+        existing_indexes = collection.index_information()
+        if f"{field_name}_-1_timestamp_-1" in existing_indexes:
+            print("Index already exists!")
+            return
+
+        # Create the index if it doesn't exist
+        result = collection.create_index([(field_name, DESCENDING), ("timestamp", DESCENDING)])
+        print("Index created successfully!")
+
 
 
 
