@@ -3,6 +3,10 @@ from basebot import TheMessage, MessageWrapper
 import openai
 
 class WhyBot(BaseBotWithLocalDb):
+
+    def help(self) -> str:
+        return "I just respond back to your messages and follow it with Why? You need to modify me to make me do something interesting."
+
     def respond(self, message: MessageWrapper) -> MessageWrapper:
         if message.get_text():
             # context_messages = self.get_message_context(message, limit=5, descending=False) 

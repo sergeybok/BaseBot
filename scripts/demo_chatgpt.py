@@ -3,6 +3,8 @@ from basebot import TheMessage, MessageWrapper
 import openai
 
 class ChatGPTBot(BaseBotWithLocalDb):
+    def help(self) -> str:
+        return "I am a wrapper around ChatGPT. Ask me anything and I will do my best to respond."
     def respond(self, message: MessageWrapper) -> MessageWrapper:
         if message.get_text():
             # get previous messages, oldest message first

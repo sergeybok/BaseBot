@@ -40,7 +40,7 @@ class TheMessage(BaseModel):
     message_id: str
 ```
 
-Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like. But it's probably easier to interface with `TheMessage` class via the `MessageWrapper` which automatically initializes message_id, timestamp, and sender_id (which is the bot_id if you're responding) for response messages if you use the `self.get_message_to()` method. So you only need to set the contents of the message. It also has helpful functions such as setting images from a list of PIL.Image objects which are then automatically converted to base64 strings.
+Which has the necessary metadata for the communication between the user and the bot. The images are base64 encoded strings. The bot's `id` is by default simply its class name but you can change it if you'd like. However the BaseBot `respond()` function provides you not `TheMessage` but the  `MessageWrapper` class which provides a load of helpful methods. For example, for response messages you use the `self.get_message_to()` method and it initializes all of the metadata and you just need to set the contents only (by calling `set_text` or `set_images`, or both). 
 
 You can, if you so choose, build your own app that receives and sends the same protocol and interface with your BaseBot bot. Or you can build your own version of BaseBot server (in another language for example such as node.js) to interface with the Friendly AI app as long as the `/respond` endpoint both receives and sends back this object:
 ```
@@ -57,7 +57,7 @@ Note that in BaseBot as well as Friendly AI app, all IDs are generated with UUID
 
 ### The demo app (Vanilla ChatGPT)
 
-This is an example of a `demo_chatgpt.py` file that is found in this repo (in /scripts) that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
+This is an example of a `demo_chatgpt.py` file that is found in this repo (in ./scripts) that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
 ``` python
 from basebot import BaseBotWithLocalDb, BaseBot
@@ -159,7 +159,7 @@ REFERENCE for HTTPS (more secure and so recommended): https://www.slingacademy.c
 
 If you want to access a server running locally on your machine you will need to open up the port on which you are serving your bot. The simplest way to do this is by using ngrok, a tool that creates a secure tunnel to expose your local server to the internet.
 
-1. Download and install ngrok by following the instructions in the [official ngrok documentation.](https://ngrok.com/docs#getting-started-installation)
+1. Download and install ngrok by following the instructions in the [official ngrok documentation.](https://ngrok.com/docs#getting-started-installation) (**Note** that this is done automatically if you say Y in the quickstart, you just need to provide your ngrok key to the script and it sets it up automatically. Alternately, you can also download and run the ./scripts/ngrok_install without running the entire ngrok script but you still need to go to the site and register and get a key)
 2. Start your server on any port, we will assume it's port 8000 for commands below
 3. Run `ngrok http 8000`
 4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
