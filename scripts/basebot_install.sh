@@ -64,7 +64,7 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/open
 chmod +x openai_install.sh
 sh openai_install.sh "$project_dir"
 
-curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/starter_bot_install.sh" > openai_install.sh
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/starter_bot_install.sh" > starter_bot_install.sh
 chmod +x starter_bot_install.sh
 sh starter_bot_install.sh
 
