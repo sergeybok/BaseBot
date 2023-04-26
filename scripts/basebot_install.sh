@@ -64,6 +64,10 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/open
 chmod +x openai_install.sh
 sh openai_install.sh "$project_dir"
 
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/starter_bot_install.sh" > openai_install.sh
+chmod +x starter_bot_install.sh
+sh starter_bot_install.sh
+
 # Prompt user to setup ngrok
 read -p "${bold}Setup ngrok [y/N]? ${normal} " choice
 case "$choice" in 
@@ -89,17 +93,11 @@ cd ..
 read -p "${bold}Start demo bot [y/N]?${normal} " choice
 case "$choice" in 
   y|Y ) 
-    sh scripts/start_bots_background.sh
+    echo "If you have the app simply type in this URL (or scan QR code) and input it into the app"
     python3 scripts/share_localhost.py --bot_name $project_dir
-esac
-
-
-# Prompt user to start test script
-read -p "${bold}Start test script [y/N]? ${normal}" choice
-case "$choice" in 
-  y|Y )
+    echo "If you do not have the app at hand, you can simply run ${bold}python scripts/test.py${normal} in another terminal"
     
-    # Start test script
-    echo "Starting test script..."
-    python3 ./tests/test.py
+    sh scripts/start_bots.sh
 esac
+
+
