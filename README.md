@@ -2,14 +2,17 @@
 
 To install 
 
-    pip install git+https://github.com/sergeybok/BaseBot.git
-
+```
+pip install git+https://github.com/sergeybok/BaseBot.git
+```
 
 ### Experimental Quickstart
 
 This currently only has been tested on Mac and Ubuntu Linux. It asks for your bot name and creates bot project directory with a virtualenv, asks for OpenAI key if not present (but this is optional), and ngrok key (also optional), and depending on if you gave an openai key or not, it starts you off with a simple ChatGPT bot, or a WhyBot that has no LLM and just repeats what you said skeptically. Also provides helpful scripts to start and stop bots in the background.
 
-    curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/basebot_install.sh" >> basebot_install.sh && sh basebot_install.sh
+```
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/basebot_install.sh" >> basebot_install.sh && sh basebot_install.sh
+```
 
 ## To download mobile app
 
@@ -95,6 +98,9 @@ There are also a few functions that are recommended to override for any bot:
 + templates() function which defines helpful keywords or phrases in the top view of the chat 
   + e.g. for Stable Diffusion you just hit that text bubble to fill in "High quality, HD, masterpiece, etc..." instead of rewriting it everytime
 
+### To add an image
+
+Simply place into your project root directory (same level as your main.py or app.py file) a image with the same name as your bot class name: `ClassName.jpg|png`. BaseBot class also takes `icon_path:str` as a parameter.
 
 ### To start your bot
 
