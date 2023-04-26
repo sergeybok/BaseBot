@@ -106,6 +106,7 @@ case "$choice" in
     exit 0    
 esac
 
+echo "Running ${bold}python scripts/share_localhost.py${normal} to display the local URL as well as QR code"
 echo "If you have the app simply type in this URL (or scan QR code) and input it into the app"
 python3 scripts/share_localhost.py --bot_name $project_dir
 echo "If you do not have the app at hand, you can simply run ${bold}python scripts/test.py${normal} in another terminal"
