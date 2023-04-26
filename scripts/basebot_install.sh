@@ -99,9 +99,10 @@ echo "BaseBot: ${project_dir} project initialized successfully!"
 cd ..
 
 # Start the app in the background, show qr with local network address, and save the logs to a file
-read -p "${bold}Start demo bot [Y/n]?${normal} " choice
+read -p "${bold}Start demo starter bot [Y/n]?${normal} " choice
 case "$choice" in 
   n|N ) 
+    echo "To start the bots yourself, run ${bold}./scripts/start_bots.sh${normal} from the root project directory"
     exit 0    
 esac
 
@@ -109,4 +110,5 @@ echo "If you have the app simply type in this URL (or scan QR code) and input it
 python3 scripts/share_localhost.py --bot_name $project_dir
 echo "If you do not have the app at hand, you can simply run ${bold}python scripts/test.py${normal} in another terminal"
 
+echo "..running ${bold}./scripts/start_bots.sh${normal} from the root project directory"
 sh scripts/start_bots.sh
