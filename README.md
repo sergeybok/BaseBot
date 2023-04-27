@@ -16,7 +16,7 @@ curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/base
 
 ## To download mobile app
 
-Provide links to iOS and Android app.
+Available on [iOS App Store](https://apps.apple.com/us/app/friendly-ai/id6447589849). Coming soon to Android Play Store.
 
 ## To implement a bot
 
