@@ -14,11 +14,12 @@ mkdir "$project_dir"
 cd "$project_dir"
 
 # Initialize virtual environment
+echo "Creating Python venv..."
 python3 -m venv venv
 source venv/bin/activate
 
 # Install required packages
-echo "Created VirtulEnv and installing required packages..."
+echo "Installing required packages..."
 pip install -q --upgrade pip
 pip install -q wheel
 pip install -q pytest
