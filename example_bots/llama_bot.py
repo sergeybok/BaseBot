@@ -23,7 +23,7 @@ class LlamaBot(BaseBotWithLocalDb):
             response_text = response_text[len(txt):].strip().replace('Bob:', '')
             resp_msg = self.get_message_to(user_id=msg.get_sender_id())
             resp_msg.set_text(response_text)
-            return resp_msg.get_message()
+            return resp_msg
         return {}
 
 
