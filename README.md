@@ -112,7 +112,9 @@ Simply place into your project root directory (same level as your main.py or app
 
 ### To start your bot
 
-See `scripts/start_bots.sh` and `scripts/stop_bots.sh` since that may be simpler. From your directory or repo where you have the above demo_chatgpt.py file, you would start it with the following command:
+See the scripts `scripts/start_bots.sh`, `scripts/start_bots_background.sh`, and `scripts/stop_bots.sh` for reference. They work with a project started from quickstart and easily allow you to start your bot, and to stop your bot if you started it in the background.
+
+From your directory or repo where you have the above demo_chatgpt.py file, you would start it with the following command:
 
 ```
 uvicorn demo_chatgpt:app --port 8000 --host 0.0.0.0
