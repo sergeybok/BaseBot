@@ -120,7 +120,7 @@ uvicorn demo_chatgpt:app --port 8000 --host 0.0.0.0
 
 The uvicorn command expects FILENAME:APPLICATION_VARIABLE_NAME where the FILENAME is without extension and the variable name is the `app = BaseBot.start_app()` variable. See [FastAPI deployment guide for more details](https://fastapi.tiangolo.com/deployment/manually/).
 
-This will now serve your bot on `http://localhost:8000/bots/ChatGPTBot` <- it is this address you provide to your app (except not the localhost version because that's only accessible on the same machine, see the **ngrok** section below on how to open up your port.)
+This will now serve your bot on `http://localhost:8000/bots/ChatGPTBot`. In order to get your local address (so that you can connect to it on local network i.e. your phone and computer are on the same wifi) run `python scripts/share_localhost.py` which should print out your local IP address as well as generate a QR code for your local address. You can also pass the `bot_name` to get the exact address of a specific bot, e.g. `python scripts/share_localhost.py --bot_name ChatGPTBot`. If you want to access your bot when you're not on the same network, see the **Ngrok** section below for more details.
 
 ## To setup local db
 
