@@ -4,6 +4,9 @@ from typing import Optional, List
 from .the_message import TheMessage
 
 
+class ClearMessageHistoryRequest(BaseModel):
+    user_id: str
+
 class MessageHistoryRequest(BaseModel):
     user_id: str
     before_ts: Optional[float] = None
