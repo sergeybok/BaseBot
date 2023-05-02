@@ -74,6 +74,8 @@ class BaseBot:
     _respond(self, request:TheMessage) -> TheMessage
         Wrapper around respond() that receives TheMessage, validates it, 
           saves it by calling save_chat_message(), calls respond(), and returns TheMessage
+    clear_message_history(self, message: TheMessage) -> None
+        Deletes all messages. Needs to be overriden if inheriting from BaseBot.
     save_chat_message(self, message: TheMessage) -> None
         Persists a message. Needs to be overriden if inheriting from BaseBot.
     get_message_context(self, message:Union[TheMessage, MessageWrapper], limit=10, before_ts=None, descending:bool=True) -> List[MessageWrapper]:
@@ -354,5 +356,12 @@ class RegisteredBaseBot(BaseBot):
         resp = requests.post(url, json=message.dict(), headers=headers)
         assert resp.status_code < 300, f'Error saving message with status code {resp.status_code}'
         pass
+
+    def clear_message_history(self, request: ClearMessageHistoryRequest):
+        url = self.url + '/messages/clear_message_history'
+        headers = {"Authorization": f"Bearer {self.bot_token}"}
+        resp = requests.post(url, json=request.dict(), headers=headers)
+        assert resp.status_code < 300, f'Error saving message with status code {resp.status_code}'
+        return {}
 
 
