@@ -10,7 +10,7 @@ from ..utils.database_util import MongoUtil, DbUtil, JsonUtil
 from .the_message import TheMessage, MessageWrapper
 from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
 from .web_models import TemplateRequest, TemplateResponse, Template, ClearMessageHistoryRequest
-
+from .web_models import ParamCompenent, InterfaceParamsResponse
 
 def preview_str(s, limit=16):
     if len(s) > limit:
@@ -120,6 +120,7 @@ class BaseBot:
         self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
         self.endpoint_templates = f'/bots/{self.__class__.__name__}/templates'
         self.endpoint_clear_message_history = f'/bots/{self.__class__.__name__}/clear_message_history'
+        self.endpoint_interface_params = f'/bots/{self.__class__.__name__}/interface_params'
         self.price = price
         if icon_path:
             self.icon_path = icon_path
@@ -135,6 +136,14 @@ class BaseBot:
     
     def clear_message_history(self, request: ClearMessageHistoryRequest):
         print('clear_message_history method needs to be overriden')
+
+    def interface_params(self) -> List[ParamCompenent]:
+        print(f'{self.name} SUGGESTIONS: interface_params() function should be overriden \n\tif you have some optional params for your bot')
+        return []
+
+    def _interface_params(self) -> InterfaceParamsResponse:
+        params = self.interface_params()
+        return InterfaceParamsResponse(params=params)
 
     def validate_message(self, message:Union[TheMessage, MessageWrapper]) -> TheMessage:
         if isinstance(message, MessageWrapper):
@@ -282,6 +291,7 @@ class BaseBot:
         app.add_api_route(self.endpoint_history, self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
         app.add_api_route(self.endpoint_templates, self._templates, methods=['GET','POST'], response_model=TemplateResponse)
         app.add_api_route(self.endpoint_clear_message_history, self.clear_message_history, methods=['POST'])
+        app.add_api_route(self.endpoint_interface_params, self._interface_params, methods=['GET','POST'])
 
 
 
