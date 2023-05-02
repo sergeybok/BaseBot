@@ -9,7 +9,7 @@ from ..utils.image_utils import img_to_b64_string
 from ..utils.database_util import MongoUtil, DbUtil, JsonUtil
 from .the_message import TheMessage, MessageWrapper
 from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
-from .web_models import TemplateRequest, TemplateResponse, Template
+from .web_models import TemplateRequest, TemplateResponse, Template, ClearMessageHistoryRequest
 
 
 def preview_str(s, limit=16):
@@ -74,6 +74,8 @@ class BaseBot:
     _respond(self, request:TheMessage) -> TheMessage
         Wrapper around respond() that receives TheMessage, validates it, 
           saves it by calling save_chat_message(), calls respond(), and returns TheMessage
+    clear_message_history(self, message: TheMessage) -> None
+        Deletes all messages. Needs to be overriden if inheriting from BaseBot.
     save_chat_message(self, message: TheMessage) -> None
         Persists a message. Needs to be overriden if inheriting from BaseBot.
     get_message_context(self, message:Union[TheMessage, MessageWrapper], limit=10, before_ts=None, descending:bool=True) -> List[MessageWrapper]:
@@ -117,6 +119,7 @@ class BaseBot:
         self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
         self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
         self.endpoint_templates = f'/bots/{self.__class__.__name__}/templates'
+        self.endpoint_clear_message_history = f'/bots/{self.__class__.__name__}/clear_message_history'
         self.price = price
         if icon_path:
             self.icon_path = icon_path
@@ -130,6 +133,9 @@ class BaseBot:
     def __repr__(self) -> str:
         return self.name + '\n\t'.join([v for k,v in vars(self).items() if k.startswith('endpoint_') and type(v) == str])
     
+    def clear_message_history(self, request: ClearMessageHistoryRequest):
+        print('clear_message_history method needs to be overriden')
+
     def validate_message(self, message:Union[TheMessage, MessageWrapper]) -> TheMessage:
         if isinstance(message, MessageWrapper):
             message = message.get_message()
@@ -275,6 +281,7 @@ class BaseBot:
         app.add_api_route(self.endpoint_about, self.about,  methods=["GET"])
         app.add_api_route(self.endpoint_history, self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
         app.add_api_route(self.endpoint_templates, self._templates, methods=['GET','POST'], response_model=TemplateResponse)
+        app.add_api_route(self.endpoint_clear_message_history, self.clear_message_history, methods=['POST'])
 
 
 
@@ -297,6 +304,8 @@ class BaseBotWithLocalDb(BaseBot):
             else:
                 self.db_util = JsonUtil(bot_id=self.bot_id)
     
+    def clear_message_history(self, request: ClearMessageHistoryRequest):
+        self.db_util.clear_chat_history(self.bot_id, request.user_id)
     def save_chat_message(self, message: TheMessage):
         self.db_util.save_chat_message(self.bot_id, message)
         return
@@ -347,5 +356,12 @@ class RegisteredBaseBot(BaseBot):
         resp = requests.post(url, json=message.dict(), headers=headers)
         assert resp.status_code < 300, f'Error saving message with status code {resp.status_code}'
         pass
+
+    def clear_message_history(self, request: ClearMessageHistoryRequest):
+        url = self.url + '/messages/clear_message_history'
+        headers = {"Authorization": f"Bearer {self.bot_token}"}
+        resp = requests.post(url, json=request.dict(), headers=headers)
+        assert resp.status_code < 300, f'Error saving message with status code {resp.status_code}'
+        return {}
 
 

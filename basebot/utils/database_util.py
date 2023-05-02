@@ -29,6 +29,9 @@ class DbUtil:
 
     def get_chat_messages(self, bot:str, user_id:str, limit:int=5, before_ts=None) -> List[TheMessage]:
         raise NotImplementedError("Abstract method")
+    
+    def clear_chat_history(self, bot:str, user_id:str) -> None:
+        raise NotImplementedError("Abstract method")
 
 class MongoUtil(DbUtil):
     def __init__(self):
@@ -38,7 +41,11 @@ class MongoUtil(DbUtil):
 
     def save_chat_message(self, bot:str, message:TheMessage) -> None:
         self.mongo.db[bot].update_one({ MESSAGE_ID: message.message_id }, { SET: message.dict()}, upsert=True)
-
+    def clear_chat_history(self, bot: str, user_id: str):
+        from_criteria = { USER_ID: user_id }
+        to_criteria = { TO_USER_ID: user_id }
+        self.mongo.db[bot].delete_many(from_criteria)
+        self.mongo.db[bot].delete_many(to_criteria)
     def get_chat_messages(self, bot:str, user_id:str, limit:int=5, before_ts=None) -> List[TheMessage]:
         from_criteria = { USER_ID: user_id }
         to_criteria = { TO_USER_ID: user_id }
@@ -91,7 +98,9 @@ class JsonUtil(DbUtil):
                 json.dump(data, f)
         with open(self.json_name, 'r') as f:
             self.messages = json.load(f)
-
+    def clear_chat_history(self, bot: str, user_id: str) -> None:
+        del self.messages[user_id]
+        self.save_messages()
     def get_message_history(self,
                             user_id:str,
                             limit=10,
