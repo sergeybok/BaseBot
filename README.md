@@ -177,7 +177,7 @@ If you want to access a server running locally on your machine you will need to 
 
 You can add common phrases as templates and they will show up at the top of the screen in the app and you can easily tap on them instead of retyping the same phrase each time.Example: 
 
-```
+```python
 class MyBot(BaseBotWithLocalDb):
     ...
     def templates(self, user_id:str):
