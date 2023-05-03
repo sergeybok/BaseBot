@@ -55,7 +55,7 @@ class VanillaStableDiffusion(BaseBotWithLocalDb):
         if text is not None:
             prompt, nprompt = self.parse_text(text)
             params = message.get_from_extras('params')
-            params['seed'] = int(params['seed'])
+            params['seed'] = int(params.get('seed', '-1'))
             default_params = self.default_params()
             for k, p in params.items():
                 default_params[k] = p
