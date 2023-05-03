@@ -171,3 +171,42 @@ If you want to access a server running locally on your machine you will need to 
 4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
 5. You can now plug in this URL into the Friendly app and communicate with your bots! **Note** that the URL expected by the app is with the bot class name. So for the demo_app ChatGPTBot it would be something like `http://12345678.ngrok.io/bots/ChatGPTBot`
 
+## Advanced 
+
+### Templates 
+
+You can add common phrases as templates and they will show up at the top of the screen in the app and you can easily tap on them instead of retyping the same phrase each time.Example: 
+
+```
+class MyBot(BaseBotWithLocalDb):
+    ...
+    def templates(self, user_id:str):
+        out = [
+            'some phrase',
+            'other phrase'
+        ]
+        return out
+    ...
+```
+
+### Bot Parameters 
+
+So for a lot of bots you have a lot of parameters that you can tweak. For language models it can be something like top_p, or the temperature. For something like stable diffusion it's the classifier free guidance strength, or the height and width of the image. Here's an example of how this is done for stable diffusion bot (found in example_bots/):
+
+```
+class MyBot(BaseBotWithLocalDb):
+    ...
+    def interface_params(self) -> List[ParamCompenent]:
+        params = [
+            ParamCompenent(name='cfg', default_value=7.5, type_value='float', min_value=1.0, max_value=20.0),
+            ParamCompenent(name='width', default_value=400, type_value='int', min_value=300, max_value=500),
+            ParamCompenent(name='height', default_value=400, type_value='int', min_value=300, max_value=500),
+            ParamCompenent(name='negative_prompt', default_value='blurry', type_value='str'),
+            ParamCompenent(name='seed', default_value=-1, type_value='int'),
+        ]
+        return params
+    ...
+```
+
+The `type_value` types supported are `['str', 'int', 'float']`. And if you define a `min_value` and `max_value` it will show up in the app as a slider. Otherwise it's simply a text input box same as for strings but with number keyboard. The function `default_params()` calls the `interface_params()` function and creates a dictionary mapping the names to the default values. It's a helpful function for if no parameters are passed. The parameters of a message are found in `extras['params']` field and can be retrieved from MessageWrapper object simply by calling `message.get_from_extras('params')`. See example_bots/stable_diffusion_bot.py for a reference.
+
