@@ -194,6 +194,7 @@ class MyBot(BaseBotWithLocalDb):
 So for a lot of bots you have a lot of parameters that you can tweak. For language models it can be something like top_p, or the temperature. For something like stable diffusion it's the classifier free guidance strength, or the height and width of the image. Here's an example of how this is done for stable diffusion bot (found in example_bots/):
 
 ```python
+from basebot.models import ParamCompenent
 class MyBot(BaseBotWithLocalDb):
     ...
     def interface_params(self) -> List[ParamCompenent]:
