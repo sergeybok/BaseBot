@@ -138,12 +138,31 @@ class BaseBot:
         print('clear_message_history method needs to be overriden')
 
     def interface_params(self) -> List[ParamCompenent]:
+        """
+        Defines the bot parameters screen in the app. See ParamComponent for more details.
+        """
         print(f'{self.name} SUGGESTIONS: interface_params() function should be overriden \n\tif you have some optional params for your bot')
         return []
 
     def _interface_params(self) -> InterfaceParamsResponse:
         params = self.interface_params()
         return InterfaceParamsResponse(params=params)
+    
+    def default_params(self) -> dict:
+        """
+        Calls interface_params() and returns {name: default_value} as a dict
+        """
+        P = self.interface_params()
+        out = {}
+        for param in P:
+            v = param.default_value
+            t = param.type_value
+            if t == 'float':
+                v = float(v)
+            if t == 'int':
+                v = int(v)
+            out[param.name] = v
+        return out
 
     def validate_message(self, message:Union[TheMessage, MessageWrapper]) -> TheMessage:
         if isinstance(message, MessageWrapper):
