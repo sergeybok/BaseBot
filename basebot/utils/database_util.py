@@ -80,11 +80,14 @@ class MongoUtil(DbUtil):
 
 
 class JsonUtil(DbUtil):
-    def __init__(self, bot_id=str):
+    def __init__(self, bot_id:str, json_directory:str):
         super().__init__()
-        self.messages: Dict[List[Dict]] = {}
+        self.messages: Dict[List[Dict]] = {} # Dictionary user_id -> message list. Each message is a dictionary version of TheMessage
         self.bot_id = bot_id
-        self.json_name = bot_id + '_messages.json'
+        if not os.path.exists(json_directory):
+            os.makedirs(json_directory)
+        filename = bot_id + '_messages.json'
+        self.json_name = os.path.join(json_directory, filename)
         self.load_messages()
 
     def save_messages(self):

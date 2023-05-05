@@ -317,7 +317,7 @@ class BaseBot:
 
 
 class BaseBotWithLocalDb(BaseBot):
-    def __init__(self, db_util: DbUtil = None, **kwargs):
+    def __init__(self, db_util: DbUtil = None, json_directory='conversations', **kwargs):
         super().__init__(**kwargs)
         if db_util:
             self.db_util = db_util
@@ -331,7 +331,7 @@ class BaseBotWithLocalDb(BaseBot):
                     print('Failed to create indexes with exception: ', e)
                 
             else:
-                self.db_util = JsonUtil(bot_id=self.bot_id)
+                self.db_util = JsonUtil(bot_id=self.bot_id, json_directory=json_directory)
     
     def clear_message_history(self, request: ClearMessageHistoryRequest):
         self.db_util.clear_chat_history(self.bot_id, request.user_id)
