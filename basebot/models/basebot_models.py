@@ -114,13 +114,8 @@ class BaseBot:
             self.bot_id = bot_id
         else:
             self.bot_id = self.name
-        self.endpoint_root = f'/bots/{self.__class__.__name__}'
-        self.endpoint_respond = f'/bots/{self.__class__.__name__}/respond'
-        self.endpoint_about = f'/bots/{self.__class__.__name__}/about'
-        self.endpoint_history = f'/bots/{self.__class__.__name__}/history'
-        self.endpoint_templates = f'/bots/{self.__class__.__name__}/templates'
-        self.endpoint_clear_message_history = f'/bots/{self.__class__.__name__}/clear_message_history'
-        self.endpoint_interface_params = f'/bots/{self.__class__.__name__}/interface_params'
+        
+        self.set_endpoint_name(self.__class__.__name__)
         self.price = price
         if icon_path:
             self.icon_path = icon_path
@@ -299,18 +294,23 @@ class BaseBot:
         return AboutResponse(name=self.name, icon=icon, bot_id=self.bot_id, price=self.price)
     def get_root(self):
         return { 'Bot': self.name }
+    
+    def set_endpoint_name(self, name):
+        self.endpoint_name = name
     def add_endpoints(self, app:FastAPI):
         """
         Adds the routing for the endpoints and corresponding functions
         """
-        print('\tAdding: ', f'/bots/{self.__class__.__name__}')
-        app.add_api_route(self.endpoint_root, self.get_root, methods=['GET'])
-        app.add_api_route(self.endpoint_respond, self._respond,  methods=["POST"], response_model=TheMessage)
-        app.add_api_route(self.endpoint_about, self.about,  methods=["GET"])
-        app.add_api_route(self.endpoint_history, self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
-        app.add_api_route(self.endpoint_templates, self._templates, methods=['GET','POST'], response_model=TemplateResponse)
-        app.add_api_route(self.endpoint_clear_message_history, self.clear_message_history, methods=['POST'])
-        app.add_api_route(self.endpoint_interface_params, self._interface_params, methods=['GET','POST'])
+        print('\tAdding: ', f'/bots/{self.endpoint_name}')
+
+        self.endpoint_interface_params = f'/bots/{self.endpoint_name}/interface_params'
+        app.add_api_route(f'/bots/{self.endpoint_name}', self.get_root, methods=['GET'])
+        app.add_api_route(f'/bots/{self.endpoint_name}/respond', self._respond,  methods=["POST"], response_model=TheMessage)
+        app.add_api_route(f'/bots/{self.endpoint_name}/about', self.about,  methods=["GET"])
+        app.add_api_route(f'/bots/{self.endpoint_name}/history', self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)
+        app.add_api_route(f'/bots/{self.endpoint_name}/templates', self._templates, methods=['GET','POST'], response_model=TemplateResponse)
+        app.add_api_route(f'/bots/{self.endpoint_name}/clear_message_history', self.clear_message_history, methods=['POST'])
+        app.add_api_route(f'/bots/{self.endpoint_name}/interface_params', self._interface_params, methods=['GET','POST'])
 
 
 
