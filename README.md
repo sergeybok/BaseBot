@@ -142,6 +142,7 @@ Run the following commands to install:
 
 ```
 sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install -y mongodb-org
 ```
 
