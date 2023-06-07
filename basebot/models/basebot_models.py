@@ -90,6 +90,8 @@ class BaseBot:
         Initializes and returns a new response message with all of the relevant fields set except for contents.
     about(self) -> AboutResponse 
         Returns the metadata of the bot AboutResponse(name=self.name, description=self.help(), icon={b64 str})
+    set_endpoint_name(self, name:str) -> None
+        Sets endpoint root name => f"/bots/{self.endpoint_name}/*"
     add_endpoints(self, app:FastAPI) -> None
         Adds the routing for the endpoints and corresponding functions
     """
