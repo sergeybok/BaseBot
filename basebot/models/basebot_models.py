@@ -287,7 +287,7 @@ class BaseBot:
         icon = None
         if self.icon_path is not None:
             try:
-                icon = Image.open(self.icon_path).resize((64,64))
+                icon = Image.open(self.icon_path).convert('RGB').resize((64,64))
                 icon = img_to_b64_string(icon)
             except Exception as e:
                 print(f'{self.name} failed to load icon image at {self.icon_path} with exception:\n\t', e)
