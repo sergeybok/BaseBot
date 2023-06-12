@@ -22,6 +22,12 @@ This currently only has been tested on Mac and Ubuntu Linux. It asks for your bo
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/basebot_install.sh" >> basebot_install.sh && sh basebot_install.sh
 ```
 
+## Publishing your bots
+
+If you would like to publish your bot on our marketplace, you can use `scripts/register.sh`.
+
+Currently, this only supports self-hosted bots and requires an active Friendly AI account.
+
 ## To download mobile app
 
 Available on [iOS App Store](https://apps.apple.com/us/app/friendly-ai/id6447589849) and [Android Play Store](https://play.google.com/store/apps/details?id=com.friendlyai.friendlychat).
