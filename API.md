@@ -4,7 +4,9 @@ Let $URL be your bot url, e.g. 'http://localhost:8000/bots/MyBot'. The following
 
 ## Required
 
-### $URL/about GET
+### $URL/about 
+
+**GET**
 
 Is the endpoint the application uses to get information about the bot, including the name and the profile picture. 
 
@@ -22,7 +24,9 @@ AboutResponse
 }
 ```
 
-### $URL/respond POST with json payload
+### $URL/respond 
+
+**POST with json payload**
 
 Both the expected payload json and the output are the same type of object, TheMessage object:
 
@@ -41,7 +45,9 @@ TheMessage
 All IDs are UUIDv4 by default in BaseBot. Images are base64 encoded strings by default.
 
 
-### $URL/history POST with json payload
+### $URL/history 
+
+**POST with json payload**
 
 It takes the user_id, the limit number of messages, and the before timestep (to create pagination by passing the timestamp of the oldest message visible on screen). The expected payload json should look like this:
 
@@ -68,7 +74,9 @@ MessageHistoryResponse
 
 The following endpoints are not necessary for simple chatbot UI, but are helpful for more specific use cases.
 
-### $URL/clear_message_history POST with json payload
+### $URL/clear_message_history 
+
+**POST with json payload**
 
 The following is the input and it outputs an empty json.
 
@@ -80,7 +88,9 @@ ClearMessageHistoryRequest
 ```
 
 
-### $URL/templates POST with json payload
+### $URL/templates 
+
+**POST with json payload**
 
 The templates are keywords that show up at the top of the app that make it easier so you don't have to retype commonly used phrases. The input looks like this:
 
@@ -103,7 +113,9 @@ TemplateResponse
 }
 ```
 
-### $URL/interface_params GET
+### $URL/interface_params 
+
+**GET**
 
 The interface params are the bot settings seen in the app in the top right corner of the chat window.
 
