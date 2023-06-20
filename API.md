@@ -24,7 +24,7 @@ AboutResponse
 
 ### $URL/respond POST with json payload
 
-Both the expected payload and the output are the same type of object, TheMessage object:
+Both the expected payload json and the output are the same type of object, TheMessage object:
 
 ```
 TheMessage 
@@ -38,7 +38,7 @@ TheMessage
 }
 ```
 
-All IDs are UUIDv4 by default in BaseBot.
+All IDs are UUIDv4 by default in BaseBot. Images are base64 encoded strings by default.
 
 
 ### $URL/history POST with json payload
