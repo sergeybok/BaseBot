@@ -75,12 +75,12 @@
                             } else {
                                 messageElement.classList.add("bot-message");
                             }
-                            if (message.contents.images) {
-                                for (const image of message.contents.images) {
+                            if (message.contents.image != null) {
+                                for (const base64Image of message.contents.image) {
                                     const imageElement = document.createElement("img");
                                     imageElement.classList.add("message-image");
-                                    imageElement.src = image;
-                                    messageElement.appendChild(imageElement);
+                                    imageElement.src = `data:image/jpeg;base64,${base64Image}`
+                                    messageContainer.appendChild(imageElement);
                                 }
                             }
 
@@ -91,7 +91,7 @@
                         sendButton.disabled = false;
                     });
             } else {
-                showAlert("Please enter a username.");
+                showAlert("Please enter a User Id.");
             }
         }
 
@@ -102,7 +102,6 @@
             const messageText = formData.get("message");
             const username = usernameInput.value.trim();
             if (username) {
-                // console.log("Message= ", messageText);
                 const message = {
                     timestamp: Date.now() / 1000,
                     sender_id: username,
@@ -111,7 +110,6 @@
                     contents: {text: messageText},
                     extras: {}
                 };
-                console.log("Message= ", JSON.stringify(message));
 
                 fetch("/bots/BaseBot.endpoint/respond", {
                     method: "POST",
@@ -129,12 +127,12 @@
                         const messageBytesElement = document.createElement("div");
                         messageBytesElement.classList.add("message", "bot-message");
                         messageBytesElement.textContent = data.contents.text;
-                        if (messageBytesElement.contents.images) {
-                            for (const image of message.contents.images) {
+                        if (data.contents.image) {
+                            for (const base64Image of data.contents.image) {
                                     const imageElement = document.createElement("img");
                                     imageElement.classList.add("message-image");
-                                    imageElement.src = image;
-                                    messageElement.appendChild(imageElement);
+                                    imageElement.src = `data:image/jpeg;base64,${base64Image}`
+                                    messageContainer.appendChild(imageElement);
                                 }
                             }
                         messageContainer.appendChild(messageBytesElement);
