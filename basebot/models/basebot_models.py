@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from PIL import Image
@@ -316,7 +316,7 @@ class BaseBot:
         with open(os.path.join('templates', f"{self.name}.html"), 'w') as f:
             f.write(s)
 
-    def _get_homepage(self, request:None):
+    def _get_homepage(self, request:Request=None):
         return self.templates.TemplateResponse(f"{self.name}.html", { "request": request })
     
     def set_endpoint_name(self, name):
