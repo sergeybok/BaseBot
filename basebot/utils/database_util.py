@@ -60,6 +60,10 @@ class MongoUtil(DbUtil):
         messages = sorted(messages, key=lambda m: m.timestamp, reverse=True)[:limit]
         return messages
 
+    def create_index(self, table_name, field_name):
+        collection = self.mongo.db[table_name]
+        collection.create_index(field_name)
+
     def create_index_if_not_exists(self, bot:str, field_name:str):
 
         # # Get a reference to the specified collection
