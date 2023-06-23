@@ -54,6 +54,12 @@ button {
     text-align: left;
 }
 
+.message-image {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 5px;
+}
+
 .alert {
     background-color: #FFCDD2;
     color: #D32F2F;

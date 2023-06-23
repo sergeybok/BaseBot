@@ -75,6 +75,14 @@
                             } else {
                                 messageElement.classList.add("bot-message");
                             }
+                            if (message.contents.images) {
+                                for (const image of message.contents.images) {
+                                    const imageElement = document.createElement("img");
+                                    imageElement.classList.add("message-image");
+                                    imageElement.src = image;
+                                    messageElement.appendChild(imageElement);
+                                }
+                            }
 
                             messageElement.textContent = message.contents.text;
                             messageContainer.appendChild(messageElement);
@@ -121,6 +129,14 @@
                         const messageBytesElement = document.createElement("div");
                         messageBytesElement.classList.add("message", "bot-message");
                         messageBytesElement.textContent = data.contents.text;
+                        if (messageBytesElement.contents.images) {
+                            for (const image of message.contents.images) {
+                                    const imageElement = document.createElement("img");
+                                    imageElement.classList.add("message-image");
+                                    imageElement.src = image;
+                                    messageElement.appendChild(imageElement);
+                                }
+                            }
                         messageContainer.appendChild(messageBytesElement);
                     });
 
