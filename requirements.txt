@@ -4,3 +4,4 @@ Pillow
 pymongo
 numpy
 uvicorn
+jinja2
