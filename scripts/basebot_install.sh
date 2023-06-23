@@ -75,6 +75,14 @@ else
   curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/demo_chatgpt.py" | sed "s/ChatGPTBot/${project_dir}/g" > ../main.py
 fi
 
+# Setup Webui
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/webui_install.sh" > webui_install.sh
+chmod +x webui_install.sh
+cd ../
+sh scripts/webui_install.sh
+cd scripts
+
+
 
 
 
