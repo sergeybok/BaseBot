@@ -60,6 +60,10 @@ chmod +x stop_bots.sh
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/start_bots_background.sh" > start_bots_background.sh
 chmod +x start_bots_background.sh
 
+# Create bot marketplace registration script
+curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/register.sh" > register.sh
+chmod +x register.sh
+
 # Setup OpenAI
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/openai_install.sh" > openai_install.sh
 chmod +x openai_install.sh

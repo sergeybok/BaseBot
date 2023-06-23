@@ -1,5 +1,13 @@
 # BaseBot
 
+- [Quickstart](#quickstart)
+- [Client](#client)
+- [Protocol](#protocol)
+- [Demo App](#demo-app)
+- [Implementing a bot](#implementing-a-bot)
+- [Publishing your bots](#publishing-your-bots)
+- [Advanced](#advanced)
+- [Miscellaneous guides](#miscellaneous-guides)
 
 ## What is Friendly AI + BaseBot
 
@@ -14,7 +22,7 @@ To install
 pip install git+https://github.com/sergeybok/BaseBot.git
 ```
 
-### Experimental Quickstart
+## Quickstart
 
 This currently only has been tested on Mac and Ubuntu Linux. It asks for your bot name and creates bot project directory with a virtualenv, asks for OpenAI key if not present (but this is optional), and ngrok key (also optional), and depending on if you gave an openai key or not, it starts you off with a simple ChatGPT bot, or a WhyBot that has no LLM and just repeats what you said skeptically. Also provides helpful scripts to start and stop bots in the background.
 
@@ -22,15 +30,11 @@ This currently only has been tested on Mac and Ubuntu Linux. It asks for your bo
 curl -sSL "https://raw.githubusercontent.com/sergeybok/BaseBot/main/scripts/basebot_install.sh" >> basebot_install.sh && sh basebot_install.sh
 ```
 
-## To download mobile app
+## Client
 
 Available on [iOS App Store](https://apps.apple.com/us/app/friendly-ai/id6447589849) and [Android Play Store](https://play.google.com/store/apps/details?id=com.friendlyai.friendlychat).
 
-## To implement a bot
-
-You should probably setup your database first by [following the instructions below](https://github.com/sergeybok/BaseBot#to-setup-local-db) because without it the bots use json files as storage. But I'll descrbe how to implement a bot here for visibility. Also don't create and run your bot from inside this repo, it's better to install the library and run it in a separate folder/repo.
-
-### The protocol
+## Protocol
 
 The main protocol of BaseBot and Friendly AI app is the following class:
 
@@ -63,7 +67,7 @@ You can, if you so choose, build your own app that receives and sends the same p
 
 Note that in BaseBot as well as Friendly AI app, all IDs are generated with UUID v4.
 
-### The demo app (Vanilla ChatGPT)
+## Demo app
 
 This is an example of a `demo_chatgpt.py` file that is found in this repo (in ./scripts) that simply creates an interface between the app, your server, and OpenAI's ChatGPT API. *Warning:* this requires an API key from [OpenAI, see their docs for reference](https://platform.openai.com/docs/api-reference/authentication). You can obviously sub in any other LLM (or any other piece of technology e.g. stable diffusion) whether it's run locally or also an API reference.
 
@@ -106,11 +110,15 @@ There are also a few functions that are recommended to override for any bot:
 + templates() function which defines helpful keywords or phrases in the top view of the chat 
   + e.g. for Stable Diffusion you just hit that text bubble to fill in "High quality, HD, masterpiece, etc..." instead of rewriting it everytime
 
-### To add an image
+## Implementing a bot
+
+You should probably setup your database first by [following the instructions below](https://github.com/sergeybok/BaseBot#to-setup-local-db) because without it the bots use json files as storage. But I'll descrbe how to implement a bot here for visibility. Also don't create and run your bot from inside this repo, it's better to install the library and run it in a separate folder/repo.
+
+### Adding an image
 
 Simply place into your project root directory (same level as your main.py or app.py file) a image with the same name as your bot class name: `ClassName.jpg|png`. BaseBot class also takes `icon_path:str` as a parameter.
 
-### To start your bot
+### Staring your bot
 
 See the scripts `scripts/start_bots.sh`, `scripts/start_bots_background.sh`, and `scripts/stop_bots.sh` for reference. They work with a project started from quickstart and easily allow you to start your bot, and to stop your bot if you started it in the background.
 
@@ -124,59 +132,13 @@ The uvicorn command expects FILENAME:APPLICATION_VARIABLE_NAME where the FILENAM
 
 This will now serve your bot on `http://localhost:8000/bots/ChatGPTBot`. In order to get your local address (so that you can connect to it on local network i.e. your phone and computer are on the same wifi) run `python scripts/share_localhost.py` which should print out your local IP address as well as generate a QR code for your local address. You can also pass the `bot_name` to get the exact address of a specific bot, e.g. `python scripts/share_localhost.py --bot_name ChatGPTBot`. If you want to access your bot when you're not on the same network, see the **Ngrok** section below for more details.
 
-## To setup local db
+## Publishing your bots
 
-Install and launch MongoDB by following the instructions in the [official MongoDB documentation](https://www.mongodb.com/docs/manual/administration/install-community/).
+If you would like to publish your bot on our marketplace, you can use `scripts/register.sh`.
 
-After you start your mongodb server, you have to set the environment variable to point to it. BaseBot expects the variable to be `MONGO_URI`. I recommend appending it to your bash_profile (if on Mac) or bashrc (if on Linux). The following line appends the default mongodb port (27017) to the Linux profile script which is by default `~/.bashrc`. And the `source` line re-runs the bash profile so that you don't need to start a new terminal shell for the environment variable to be present.
+Currently, this only supports self-hosted bots and requires an active Friendly AI account.
 
-```
-echo 'export MONGO_URI=mongodb://localhost:27017' >> ~/.bashrc
-source ~/.bashrc
-```
-
-
-### Install & Launch on Ubuntu 20.04 Linux (summary of docs above)
-
-Run the following commands to install:
-
-```
-curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
-   sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
-   --dearmor
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install -y mongodb-org
-```
-
-Run the following commands to start the server:
-
-```
-sudo systemctl start mongod     # You need to run this command each time you reboot your computer
-sudo systemctl status mongod    # Check that it's running
-```
-
-If there are errors e.g. `Failed to start mongod.service: Unit mongod.service not found.` Run this before re-running the commands above:
-
-```
-sudo systemctl daemon-reload
-```
-
-
-## To ngrok your server (Ubuntu Linux)
-
-REFERENCE for HTTPS (more secure and so recommended): https://www.slingacademy.com/article/deploying-fastapi-on-ubuntu-with-nginx-and-lets-encrypt/
-
-If you want to access a server running locally on your machine you will need to open up the port on which you are serving your bot. The simplest way to do this is by using ngrok, a tool that creates a secure tunnel to expose your local server to the internet.
-
-1. Download and install ngrok by following the instructions in the [official ngrok documentation.](https://ngrok.com/docs#getting-started-installation) (**Note** that this is done automatically if you say Y in the quickstart, you just need to provide your ngrok key to the script and it sets it up automatically. Alternately, you can also download and run the ./scripts/ngrok_install without running the entire ngrok script but you still need to go to the site and register and get a key)
-2. Start your server on any port, we will assume it's port 8000 for commands below
-3. Run `ngrok http 8000`
-4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
-5. You can now plug in this URL into the Friendly app and communicate with your bots! **Note** that the URL expected by the app is with the bot class name. So for the demo_app ChatGPTBot it would be something like `http://12345678.ngrok.io/bots/ChatGPTBot`
-
-## Advanced 
+## Advanced
 
 ### Templates 
 
@@ -216,3 +178,55 @@ class MyBot(BaseBotWithLocalDb):
 
 The `type_value` types supported are `['str', 'int', 'float']`. And if you define a `min_value` and `max_value` it will show up in the app as a slider. Otherwise it's simply a text input box same as for strings but with number keyboard. The function `default_params()` calls the `interface_params()` function and creates a dictionary mapping the names to the default values. It's a helpful function for if no parameters are passed. The parameters of a message are found in `extras['params']` field and can be retrieved from MessageWrapper object simply by calling `message.get_from_extras('params')`. See example_bots/stable_diffusion_bot.py for a reference.
 
+## Miscellaneous Guides
+
+### Setting up a local db
+
+Install and launch MongoDB by following the instructions in the [official MongoDB documentation](https://www.mongodb.com/docs/manual/administration/install-community/).
+
+After you start your mongodb server, you have to set the environment variable to point to it. BaseBot expects the variable to be `MONGO_URI`. I recommend appending it to your bash_profile (if on Mac) or bashrc (if on Linux). The following line appends the default mongodb port (27017) to the Linux profile script which is by default `~/.bashrc`. And the `source` line re-runs the bash profile so that you don't need to start a new terminal shell for the environment variable to be present.
+
+```
+echo 'export MONGO_URI=mongodb://localhost:27017' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Install & Launch on Ubuntu 20.04 Linux (summary of docs above)
+
+Run the following commands to install:
+
+```
+curl -fsSL https://pgp.mongodb.com/server-6.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg \
+   --dearmor
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y mongodb-org
+```
+
+Run the following commands to start the server:
+
+```
+sudo systemctl start mongod     # You need to run this command each time you reboot your computer
+sudo systemctl status mongod    # Check that it's running
+```
+
+If there are errors e.g. `Failed to start mongod.service: Unit mongod.service not found.` Run this before re-running the commands above:
+
+```
+sudo systemctl daemon-reload
+```
+
+
+### Setting up ngrok for your server (Ubuntu Linux)
+
+REFERENCE for HTTPS (more secure and so recommended): https://www.slingacademy.com/article/deploying-fastapi-on-ubuntu-with-nginx-and-lets-encrypt/
+
+If you want to access a server running locally on your machine you will need to open up the port on which you are serving your bot. The simplest way to do this is by using ngrok, a tool that creates a secure tunnel to expose your local server to the internet.
+
+1. Download and install ngrok by following the instructions in the [official ngrok documentation.](https://ngrok.com/docs#getting-started-installation) (**Note** that this is done automatically if you say Y in the quickstart, you just need to provide your ngrok key to the script and it sets it up automatically. Alternately, you can also download and run the ./scripts/ngrok_install without running the entire ngrok script but you still need to go to the site and register and get a key)
+2. Start your server on any port, we will assume it's port 8000 for commands below
+3. Run `ngrok http 8000`
+4. Ngrok will generate a unique URL that you can use to access your locally hosted server over the internet. Look for the Forwarding line in the ngrok console output to find the URL. It should look something like this: `Forwarding  http://12345678.ngrok.io -> http://localhost:8000`
+5. You can now plug in this URL into the Friendly app and communicate with your bots! **Note** that the URL expected by the app is with the bot class name. So for the demo_app ChatGPTBot it would be something like `http://12345678.ngrok.io/bots/ChatGPTBot`
