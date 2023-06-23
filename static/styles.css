@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+textarea {
+    padding: 5px 10px;
+    font-size: 16px;
+    width: 100%;
+    resize: vertical;
+    white-space: normal;
+}
+
+button {
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+#message-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #8cd5da;
+    text-align: right;
+}
+
+.bot-message {
+    background-color: #E2E2E2;
+    text-align: left;
+}
+
+.alert {
+    background-color: #FFCDD2;
+    color: #D32F2F;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
