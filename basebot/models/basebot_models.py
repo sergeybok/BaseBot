@@ -12,6 +12,10 @@ from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResp
 from .web_models import TemplateRequest, TemplateResponse, Template, ClearMessageHistoryRequest
 from .web_models import ParamCompenent, InterfaceParamsResponse
 
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+
+
 def preview_str(s, limit=16):
     if len(s) > limit:
         return s[:limit] + '..'
@@ -107,6 +111,8 @@ class BaseBot:
             else:
                 print('WARNING:',bot, 'is not an instance of BaseBot, make sure you define your new class like so: class MyBot(BaseBot)')
         BaseBot.app = app
+        if os.path.exists('static'):
+            app.mount("/static", StaticFiles(directory="static"), name="static")
         return app 
     
     # Instance Methods
@@ -127,6 +133,10 @@ class BaseBot:
                 if os.path.exists(self.__class__.__name__+ext):
                     self.icon_path = self.__class__.__name__+ext
         self.registered = False
+        if os.path.exists(os.path.join('templates', 'index.html')) and os.path.exists(os.path.join('static', 'styles.css')):
+            self.templates = Jinja2Templates(directory="templates")
+        else:
+            self.templates = None
 
     def __repr__(self) -> str:
         return self.name + '\n\t'.join([v for k,v in vars(self).items() if k.startswith('endpoint_') and type(v) == str])
@@ -296,6 +306,18 @@ class BaseBot:
         return AboutResponse(name=self.name, icon=icon, bot_id=self.bot_id, price=self.price)
     def get_root(self):
         return { 'Bot': self.name }
+
+    def _create_homepage(self):
+        with open(os.path.join('templates', 'index.html')) as f:
+            s = f.read()
+        s = s.replace('BaseBot.name', self.name)
+        s = s.replace('BaseBot.endpoint', self.endpoint_name)
+        s = s.replace('BaseBot.id', self.bot_id)
+        with open(os.path.join('templates', f"{self.name}.html"), 'w') as f:
+            f.write(s)
+
+    def _get_homepage(self, request:None):
+        return self.templates.TemplateResponse(f"{self.name}.html", { "request": request })
     
     def set_endpoint_name(self, name):
         self.endpoint_name = name
@@ -304,9 +326,12 @@ class BaseBot:
         Adds the routing for the endpoints and corresponding functions
         """
         print('\tAdding: ', f'/bots/{self.endpoint_name}')
-
         self.endpoint_interface_params = f'/bots/{self.endpoint_name}/interface_params'
-        app.add_api_route(f'/bots/{self.endpoint_name}', self.get_root, methods=['GET'])
+        if self.templates:
+            self._create_homepage()
+            app.add_api_route(f'/bots/{self.endpoint_name}', self._get_homepage, methods=['GET'])
+        else: 
+            app.add_api_route(f'/bots/{self.endpoint_name}', self.get_root, methods=['GET'])
         app.add_api_route(f'/bots/{self.endpoint_name}/respond', self._respond,  methods=["POST"], response_model=TheMessage)
         app.add_api_route(f'/bots/{self.endpoint_name}/about', self.about,  methods=["GET"])
         app.add_api_route(f'/bots/{self.endpoint_name}/history', self._get_message_history,  methods=["POST"], response_model=MessageHistoryResponse)

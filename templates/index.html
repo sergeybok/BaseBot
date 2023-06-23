@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BaseBot.name</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>BaseBot.name</h1>
+        
+        <div>
+            <label for="username-input">User Id:</label>
+            <input type="text" id="username-input" placeholder="Enter your user id before sending">
+            <button id="load-button">Load Messages</button>
+        </div>
+        
+        <div id="message-container">
+            <!-- Messages will be displayed here -->
+        </div>
+        
+        <form action="/send-message" method="post" class="message-form">
+            <input type="text" name="message" placeholder="Enter your message" required>
+            <button type="submit" id="send-button" disabled>Send</button>
+        </form>
+    </div>
+
+    <script>
+        const loadButton = document.getElementById("load-button");
+        const usernameInput = document.getElementById("username-input");
+        const sendButton = document.getElementById("send-button");
+        const messageForm = document.querySelector(".message-form");
+
+        function showAlert(message) {
+            const alertElement = document.createElement("div");
+            alertElement.classList.add("alert");
+            alertElement.textContent = message;
+
+            const container = document.querySelector(".container");
+            container.insertBefore(alertElement, container.firstChild);
+
+            setTimeout(() => {
+                alertElement.remove();
+            }, 3000);
+        }
+        function uuidv4() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
+
+        function loadMessages() {
+            const username = usernameInput.value.trim();
+            const historydata = {
+                user_id: username,
+                limit: 12
+            };
+            const historydataString = JSON.stringify(historydata);
+            if (username) {
+                fetch("/bots/BaseBot.endpoint/history", {
+                    method: "POST", 
+                    body: historydataString,
+                    headers: {'Content-Type': 'application/json'} 
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const messageContainer = document.getElementById("message-container");
+                        messageContainer.innerHTML = "";
+                        data.messages.reverse();
+                        for (const message of data.messages) {
+                            const messageElement = document.createElement("div");
+                            messageElement.classList.add("message");
+
+                            if (message.sender_id.startsWith(username)) {
+                                messageElement.classList.add("user-message");
+                            } else {
+                                messageElement.classList.add("bot-message");
+                            }
+
+                            messageElement.textContent = message.contents.text;
+                            messageContainer.appendChild(messageElement);
+                        }
+
+                        sendButton.disabled = false;
+                    });
+            } else {
+                showAlert("Please enter a username.");
+            }
+        }
+
+        function sendMessage(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const messageText = formData.get("message");
+            const username = usernameInput.value.trim();
+            if (username) {
+                // console.log("Message= ", messageText);
+                const message = {
+                    timestamp: Date.now() / 1000,
+                    sender_id: username,
+                    recipient_id: "BaseBot.id",
+                    message_id: uuidv4(),
+                    contents: {text: messageText},
+                    extras: {}
+                };
+                console.log("Message= ", JSON.stringify(message));
+
+                fetch("/bots/BaseBot.endpoint/respond", {
+                    method: "POST",
+                    body: JSON.stringify(message),
+                    headers: {'Content-Type': 'application/json'} 
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const messageContainer = document.getElementById("message-container");
+                        const messageElement = document.createElement("div");
+                        messageElement.classList.add("message", "user-message");
+                        messageElement.textContent = message.contents.text;
+                        messageContainer.appendChild(messageElement);
+
+                        const messageBytesElement = document.createElement("div");
+                        messageBytesElement.classList.add("message", "bot-message");
+                        messageBytesElement.textContent = data.contents.text;
+                        messageContainer.appendChild(messageBytesElement);
+                    });
+
+                form.reset();
+            } else {
+                showAlert("Please enter a username.");
+            }
+        }
+
+        loadButton.addEventListener("click", loadMessages);
+        messageForm.addEventListener("submit", sendMessage);
+    </script>
+</body>
+</html>
