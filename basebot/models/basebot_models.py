@@ -134,9 +134,9 @@ class BaseBot:
                     self.icon_path = self.__class__.__name__+ext
         self.registered = False
         if os.path.exists(os.path.join('templates', 'index.html')) and os.path.exists(os.path.join('static', 'styles.css')):
-            self.templates = Jinja2Templates(directory="templates")
+            self.jinja_templates = Jinja2Templates(directory="templates")
         else:
-            self.templates = None
+            self.jinja_templates = None
 
     def __repr__(self) -> str:
         return self.name + '\n\t'.join([v for k,v in vars(self).items() if k.startswith('endpoint_') and type(v) == str])
@@ -317,7 +317,7 @@ class BaseBot:
             f.write(s)
 
     def _get_homepage(self, request:Request=None):
-        return self.templates.TemplateResponse(f"{self.name}.html", { "request": request })
+        return self.jinja_templates.TemplateResponse(f"{self.name}.html", { "request": request })
     
     def set_endpoint_name(self, name):
         self.endpoint_name = name
@@ -327,7 +327,7 @@ class BaseBot:
         """
         print('\tAdding: ', f'/bots/{self.endpoint_name}')
         self.endpoint_interface_params = f'/bots/{self.endpoint_name}/interface_params'
-        if self.templates:
+        if self.jinja_templates:
             self._create_homepage()
             app.add_api_route(f'/bots/{self.endpoint_name}', self._get_homepage, methods=['GET'])
         else: 
