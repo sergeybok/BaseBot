@@ -32,13 +32,18 @@ class DbUtil:
     
     def clear_chat_history(self, bot:str, user_id:str) -> None:
         raise NotImplementedError("Abstract method")
+    
+    def rate_message(self, bot:str, message_id:str, rating:float) -> None:
+        raise NotImplementedError("Abstract method")
+        
 
 class MongoUtil(DbUtil):
     def __init__(self):
         super().__init__()
         self.mongo = pymongo.MongoClient(os.environ['MONGO_URI'], retryWrites=False, connect=False)
         pass
-
+    def rate_message(self, bot:str, message_id:str, rating:float) -> None:
+        self.mongo.db[bot].update_one({MESSAGE_ID: message_id}, {SET: { 'feedback':rating }})
     def save_chat_message(self, bot:str, message:TheMessage) -> None:
         self.mongo.db[bot].update_one({ MESSAGE_ID: message.message_id }, { SET: message.dict()}, upsert=True)
     def clear_chat_history(self, bot: str, user_id: str):
@@ -72,7 +77,7 @@ class MongoUtil(DbUtil):
         # Check if the index already exists
         existing_indexes = collection.index_information()
         if f"{field_name}_-1_timestamp_-1" in existing_indexes:
-            print("Index already exists!")
+            # print("Index already exists!")
             return
 
         # Create the index if it doesn't exist
@@ -148,3 +153,15 @@ class JsonUtil(DbUtil):
 
     def save_chat_message(self, name:str, message:TheMessage) -> None:
         self._save_chat_message(name, message.dict())
+
+    def rate_message(self, bot: str, message_id: str, rating: float) -> None:
+        found = False
+        for userid, messages in self.messages.items():
+            for msg in messages:
+                if msg['message_id'] == message_id:
+                    msg['feedback'] = rating
+                    found = True
+                    break
+            if found:
+                break
+        self.save_messages()
