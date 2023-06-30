@@ -5,12 +5,14 @@ from PIL import Image
 import os
 import requests
 
+from basebot.models.web_models import FeedbackRequest
+
 from ..utils.image_utils import img_to_b64_string
 from ..utils.database_util import MongoUtil, DbUtil, JsonUtil
 from .the_message import TheMessage, MessageWrapper
 from .web_models import AboutResponse, MessageHistoryRequest, MessageHistoryResponse
 from .web_models import TemplateRequest, TemplateResponse, Template, ClearMessageHistoryRequest
-from .web_models import ParamCompenent, InterfaceParamsResponse
+from .web_models import ParamCompenent, InterfaceParamsResponse, FeedbackRequest
 
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -319,6 +321,18 @@ class BaseBot:
     def _get_homepage(self, request:Request=None):
         return self.jinja_templates.TemplateResponse(f"{self.name}.html", { "request": request })
     
+    def feedback(self, message_id:str, rating:float) -> None:
+        """
+        FeedbackRequest: request.message_id and request.rating
+        Should update the database for the given message_id.
+        """
+        print(f'{self.name} WARNING: _feedback(self, request:FeedbackRequest) function should be overriden!')
+        pass
+
+    def _feedback(self, request:FeedbackRequest) -> dict:
+        self.feedback(request.message_id, request.rating)
+        return {}
+
     def set_endpoint_name(self, name):
         self.endpoint_name = name
     def add_endpoints(self, app:FastAPI):
@@ -338,6 +352,7 @@ class BaseBot:
         app.add_api_route(f'/bots/{self.endpoint_name}/templates', self._templates, methods=['GET','POST'], response_model=TemplateResponse)
         app.add_api_route(f'/bots/{self.endpoint_name}/clear_message_history', self.clear_message_history, methods=['POST'])
         app.add_api_route(f'/bots/{self.endpoint_name}/interface_params', self._interface_params, methods=['GET','POST'])
+        app.add_api_route(f'/bots/{self.endpoint_name}/feedback', self._feedback, methods=['POST'])
 
 
 
@@ -365,6 +380,10 @@ class BaseBotWithLocalDb(BaseBot):
     def save_chat_message(self, message: TheMessage):
         self.db_util.save_chat_message(self.bot_id, message)
         return
+
+    def feedback(self, message_id: str, rating: float) -> None:
+        self.db_util.
+        pass
 
     def get_message_history(self, user_id:str, limit:int=10, before_ts:float=None, descending:bool=True) -> List[TheMessage]:
         messages = self.db_util.get_chat_messages(bot=self.bot_id, user_id=user_id,limit=limit, before_ts=before_ts)

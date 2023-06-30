@@ -4,6 +4,10 @@ from typing import Optional, List
 from .the_message import TheMessage
 
 
+class FeedbackRequest(BaseModel):
+    message_id:str
+    rating:int
+
 class ParamCompenent(BaseModel):
     """
     Parameters shown in the app
