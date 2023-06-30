@@ -5,8 +5,6 @@ from PIL import Image
 import os
 import requests
 
-from basebot.models.web_models import FeedbackRequest
-
 from ..utils.image_utils import img_to_b64_string
 from ..utils.database_util import MongoUtil, DbUtil, JsonUtil
 from .the_message import TheMessage, MessageWrapper
