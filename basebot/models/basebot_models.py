@@ -382,7 +382,7 @@ class BaseBotWithLocalDb(BaseBot):
         return
 
     def feedback(self, message_id: str, rating: float) -> None:
-        self.db_util.
+        self.db_util.rate_message(self.bot_id, message_id, rating)
         pass
 
     def get_message_history(self, user_id:str, limit:int=10, before_ts:float=None, descending:bool=True) -> List[TheMessage]:
