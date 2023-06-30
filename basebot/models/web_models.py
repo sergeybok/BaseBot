@@ -6,7 +6,7 @@ from .the_message import TheMessage
 
 class FeedbackRequest(BaseModel):
     message_id:str
-    rating:int
+    rating:float
 
 class ParamCompenent(BaseModel):
     """
