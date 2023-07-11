@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, BackgroundTasks
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from PIL import Image
