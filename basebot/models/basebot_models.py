@@ -131,8 +131,10 @@ class BaseBot:
                 schedule.every(interval).seconds.do(func)
                 min_interval = min(min_interval, interval)
             if min_interval != float('inf'):
-                start_time = min_interval + (int(time.time()) % min_interval)
-                # print(f'\tScheduler sleeping for {wait_time} seconds')
+                now = int(time.time())
+                wait_time = min_interval - (now % min_interval)
+                start_time = wait_time + now
+                print(f'\tScheduler sleeping for {wait_time} seconds')
                 while time.time() < start_time and not BaseBot._stopped:
                     time.sleep(1)
                 while True and not BaseBot._stopped:
