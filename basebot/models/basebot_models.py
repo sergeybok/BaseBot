@@ -1,9 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List, Union
 from PIL import Image
 import os
 import requests
+import schedule
+from threading import Thread
 
 from ..utils.image_utils import img_to_b64_string
 from ..utils.database_util import MongoUtil, DbUtil, JsonUtil
@@ -14,12 +16,14 @@ from .web_models import ParamCompenent, InterfaceParamsResponse, FeedbackRequest
 
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import time
 
 
 def preview_str(s, limit=16):
     if len(s) > limit:
         return s[:limit] + '..'
     return s
+
 
 class BaseBot:
     """
@@ -100,23 +104,51 @@ class BaseBot:
         Adds the routing for the endpoints and corresponding functions
     """
     app = None
-    
+    _scheduled_callbacks = []
+    _stopped = False
     # Class Methods
     @staticmethod
     def start_app(*args) -> FastAPI:
         app = FastAPI()
+        bot_timer_funcs = []
         for bot in args:
             if isinstance(bot, BaseBot):
                 bot.add_endpoints(app)
+                if bot._timer_seconds is not None and bot._timer_seconds > 0:
+                    bot_timer_funcs.append((bot.timer, bot._timer_seconds))
             else:
-                print('WARNING:',bot, 'is not an instance of BaseBot, make sure you define your new class like so: class MyBot(BaseBot)')
+                print('ERROR LAUNCHING:', bot, 'is not an instance of BaseBot. Make sure you define your new class like so: class MyBot(BaseBot)')
+
         BaseBot.app = app
+        BaseBot._scheduled_callbacks = bot_timer_funcs
+
         if os.path.exists('static'):
             app.mount("/static", StaticFiles(directory="static"), name="static")
-        return app 
+
+        def schedule_runner():
+            min_interval = float('inf')
+            for func, interval in BaseBot._scheduled_callbacks:
+                schedule.every(interval).seconds.do(func)
+                min_interval = min(min_interval, interval)
+            if min_interval != float('inf'):
+                start_time = min_interval + (int(time.time()) % min_interval)
+                # print(f'\tScheduler sleeping for {wait_time} seconds')
+                while time.time() < start_time and not BaseBot._stopped:
+                    time.sleep(1)
+                while True and not BaseBot._stopped:
+                    schedule.run_pending()
+                    time.sleep(1)
+        def shutdown_event():
+            print('Stopping scheduler')
+            BaseBot._stopped = True
+            BaseBot._scheduler_thread.join()
+        BaseBot._scheduler_thread = Thread(target=schedule_runner)
+        BaseBot._scheduler_thread.start()
+        app.add_event_handler(event_type='shutdown', func=shutdown_event)
+        return app
     
     # Instance Methods
-    def __init__(self, price:int=0, icon_path:str=None, bot_id:str=None):
+    def __init__(self, price:int=0, icon_path:str=None, bot_id:str=None, timer_seconds:int=None, suppress_warnings=False):
         self.name = 'bot.'+self.__class__.__name__
         if bot_id:
             self.bot_id = bot_id
@@ -125,6 +157,8 @@ class BaseBot:
         
         self.set_endpoint_name(self.__class__.__name__)
         self.price = price
+        self._timer_seconds = timer_seconds
+        self._suppress_warnings = suppress_warnings
         if icon_path:
             self.icon_path = icon_path
         else:
@@ -148,7 +182,8 @@ class BaseBot:
         """
         Defines the bot parameters screen in the app. See ParamComponent for more details.
         """
-        print(f'{self.name} SUGGESTIONS: interface_params() function should be overriden \n\tif you have some optional params for your bot')
+        if not self._suppress_warnings:
+            print(f'{self.name} SUGGESTIONS: interface_params() function should be overriden \n\tif you have some optional params for your bot')
         return []
 
     def _interface_params(self) -> InterfaceParamsResponse:
@@ -197,13 +232,15 @@ class BaseBot:
         """
         Returns a helpful message about what the bot does and how to use it. Should be overriden.
         """
-        print(f'{self.name} SUGGESTIONS: help() function should be overriden to provide \n\ta helpful message about what the bot is and how to use it.')
+        if not self._suppress_warnings:
+            print(f'{self.name} SUGGESTIONS: help() function should be overriden to provide \n\ta helpful message about what the bot is and how to use it.')
         return None
     def templates(self, user_id=None) -> Union[List[str],List[Template]]:
         """
         Returns helpful template phrases repeatedly used in queries.
         """
-        print(f'{self.name} SUGGESTIONS: templates() function should be overriden \n\tif there are specific phrases people reuse all the time in prompts.')
+        if not self._suppress_warnings:
+            print(f'{self.name} SUGGESTIONS: templates() function should be overriden \n\tif there are specific phrases people reuse all the time in prompts.')
         return []
     def _templates(self, request:TemplateRequest=None) -> TemplateResponse:
         """
@@ -233,7 +270,8 @@ class BaseBot:
             return resp_message
         ```
         """
-        print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
+        if not self._suppress_warnings:
+            print(f'{self.name} WARNING: respond(message:TheMessage) function should be overriden!')
         resp_msg = MessageWrapper(user_id=self.name, recipient_id=message.get_sender_id())
         if message.contents.text:
             resp_msg.set_text('You said: ' + message.get_text())
@@ -259,7 +297,8 @@ class BaseBot:
         """
         Persists a message. Needs to be overriden if inheriting from BaseBot.
         """
-        print(f'{self.name} WARNING: save_chat_message(message:TheMessage) function should be overriden!')
+        if not self._suppress_warnings:
+            print(f'{self.name} WARNING: save_chat_message(message:TheMessage) function should be overriden!')
         return
     def get_message_context(self, message:Union[TheMessage, MessageWrapper], limit=10, before_ts=None, descending:bool=True) -> List[MessageWrapper]:
         """
@@ -277,7 +316,8 @@ class BaseBot:
         Queries a database to find messages between this bot and the user. The app expects most recent message first (descending order by timestamp).
         Should be overriden if inheriting from BaseBot.
         """
-        print(f'{self.name} WARNING: get_message_history(user_id, limit, ...) function should be overriden!')
+        if not self._suppress_warnings:
+            print(f'{self.name} WARNING: get_message_history(user_id, limit, ...) function should be overriden!')
         return []
     def _get_message_history(self, request: MessageHistoryRequest) -> MessageHistoryResponse:
         """
@@ -324,12 +364,18 @@ class BaseBot:
         FeedbackRequest: request.message_id and request.rating
         Should update the database for the given message_id.
         """
-        print(f'{self.name} WARNING: _feedback(self, request:FeedbackRequest) function should be overriden!')
+        if not self._suppress_warnings:
+            print(f'{self.name} WARNING: _feedback(self, request:FeedbackRequest) function should be overriden!')
         pass
 
     def _feedback(self, request:FeedbackRequest) -> dict:
         self.feedback(request.message_id, request.rating)
         return {}
+    
+    def timer(self):
+        if not self._suppress_warnings:
+            print(f'{self.name} WARNING: timer(self) function should be overriden!')
+        pass
 
     def set_endpoint_name(self, name):
         self.endpoint_name = name

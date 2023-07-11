@@ -5,3 +5,4 @@ pymongo
 numpy
 uvicorn
 jinja2
+schedule
