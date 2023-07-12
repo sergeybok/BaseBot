@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Any
 from PIL import Image
-import os
+import os, pickle
 import requests
 import schedule
 from threading import Thread
@@ -47,7 +47,10 @@ class BaseBot:
     "/bots/{self.__class__.__name__}/about" 
     "/bots/{self.__class__.__name__}/respond" 
     "/bots/{self.__class__.__name__}/history" 
-    "/bots/{self.__class__.__name__}/templates" 
+    "/bots/{self.__class__.__name__}/templates"
+    "/bots/{self.__class__.__name__}/clear_message_history"
+    "/bots/{self.__class__.__name__}/interface_params
+    "/bots/{self.__class__.__name__}/feedback
 
     Methods
     -------
@@ -150,7 +153,7 @@ class BaseBot:
         return app
     
     # Instance Methods
-    def __init__(self, price:int=0, icon_path:str=None, bot_id:str=None, timer_seconds:int=None, suppress_warnings=False):
+    def __init__(self, price:int=0, icon_path:str=None, bot_id:str=None, timer_seconds:int=None, cache_directory:str='bot_cache', suppress_warnings=False):
         self.name = 'bot.'+self.__class__.__name__
         if bot_id:
             self.bot_id = bot_id
@@ -173,6 +176,7 @@ class BaseBot:
             self.jinja_templates = Jinja2Templates(directory="templates")
         else:
             self.jinja_templates = None
+        self.cache_directory = os.path.join(cache_directory, self.name)
 
     def __repr__(self) -> str:
         return self.name + '\n\t'.join([v for k,v in vars(self).items() if k.startswith('endpoint_') and type(v) == str])
@@ -373,6 +377,21 @@ class BaseBot:
     def _feedback(self, request:FeedbackRequest) -> dict:
         self.feedback(request.message_id, request.rating)
         return {}
+    
+    def cache_save(self, key, **kwargs) -> None:
+        if not os.path.exists(self.cache_directory):
+            os.makedirs(self.cache_directory)
+        fn = os.path.join(self.cache_directory, key+'.pkl')
+        with open(fn, 'wb') as f:
+            pickle.dump(dict(kwargs), f)
+    
+    def cache_load(self, key) -> Any:
+        fn = os.path.join(self.cache_directory, key+'.pkl')
+        if os.path.exists(fn):
+            with open(fn, 'rb') as f:
+                obj = pickle.load(f)
+            return obj
+        return None
     
     def timer(self):
         if not self._suppress_warnings:
