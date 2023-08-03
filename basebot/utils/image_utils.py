@@ -49,7 +49,7 @@ def shave_image(img:Image, vertical:bool, percent:int, verbose:bool=True) -> Ima
         trim_half = round(trim / 2)
         upper += trim_half
         lower -= trim_half
-    elif args.horizontal:
+    else:
         if verbose:
             print('Image:cropping horizontal')
         trim = img.width*(percent / 100)
