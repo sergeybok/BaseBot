@@ -37,7 +37,7 @@ def b64_string_to_img(im_b64: str) -> Image:
     return img2
 
 
-def crop_image(vertical:bool, img:Image, percent:int, verbose:bool=True) -> Image:
+def shave_image(img:Image, vertical:bool, percent:int, verbose:bool=True) -> Image:
     left = 0 
     upper = 0
     right = img.width 
@@ -71,7 +71,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     img = Image.open(args.path)
     
-
+    assert args.vertical or args.horizontal, 'Must pass either --horizontal or --vertical'
+    img = shave_image(img, args.vertical, args.pct)
     img.save(args.path)
 
 
